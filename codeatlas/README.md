@@ -136,6 +136,16 @@ codeatlas/
 │       ├── code_snippet.dart      # Komponen penampil snippet kode dengan salin teks
 │       └── topic_tile.dart        # Komponen kartu item topik yang dapat digunakan ulang
 └── test/
-    ├── content_and_path_test.dart # Validasi seluruh 99 artikel, DAG, kuis, perbandingan
-    └── learning_flow_test.dart    # Pengujian progress, batas catatan, kuis scoring, preset
+    ├── bootstrap_and_retry_widget_test.dart # Fallback banner upgrade gagal, error & retry
+    ├── comparison_widget_test.dart        # Auto-switch tata letak vertikal skala 200%
+    ├── content_and_path_test.dart         # Validasi 99 artikel, 76 kategori, DAG, kuis
+    ├── explore_filter_widget_test.dart    # Tab navigasi dan filter gabungan AND
+    ├── learning_flow_test.dart            # Progress, batas catatan, kuis scoring, preset
+    ├── learning_path_algorithm_test.dart  # Transitive closure, deduplikasi, topological sort
+    ├── quiz_session_widget_test.dart      # Penyamaran label bahasa, stabilitas kuis
+    ├── roadmap_filter_widget_test.dart    # Alur bertahap 3 tingkat Roadmap & jump prasyarat
+    ├── topic_detail_widget_test.dart      # Artikel 8 bagian, FAB Daftar Isi, bebas overflow
+    ├── topic_notes_widget_test.dart       # CRUD catatan, dirty indicator, in-flight typing
+    └── version_branching_unit_test.dart   # Percabangan versi DB & migrasi SQLite v2
 ```
+
