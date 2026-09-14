@@ -3,7 +3,7 @@
 
 CURRICULUM_PART4A = {
     "f-input-output": {
-        "summary": "Mekanisme transfer aliran data antara program komputer dengan perangkat eksternal dunia luar.",
+        "summary": "Cara program menerima masukan dari pengguna dan menampilkan hasilnya keluar.",
         "explanation_simple": (
             "Bayangkan pintu gerbang dermaga pelabuhan peti kemas. Kapal kargo dari samudera lepas (input) membongkar muatan "
             "kontainer barang ke area dermaga. Pekerja dermaga menyortir dan mencatat barang tersebut di gudang (pemrosesan program), "
@@ -66,7 +66,7 @@ CURRICULUM_PART4A = {
     },
 
     "f-file-system": {
-        "summary": "Struktur penyimpanan permanen, hierarki direktori, metadata, dan izin akses file pada disk.",
+        "summary": "Membaca, menulis, dan mengelola berkas serta folder di media penyimpanan.",
         "explanation_simple": (
             "Bayangkan lemari arsip baja di kantor kearsipan nasional. Setiap laci memiliki map berkas gantung, "
             "dan di dalam map terdapat formulir dokumen resmi. Di bagian depan setiap dokumen terdapat stiker label: "
@@ -128,7 +128,7 @@ CURRICULUM_PART4A = {
     },
 
     "f-operating-system": {
-        "summary": "Perangkat lunak pengelola sumber daya perangkat keras dan penyedia lingkungan eksekusi aplikasi yang aman.",
+        "summary": "Peran sistem operasi dalam menjembatani aplikasi dengan perangkat keras komputer.",
         "explanation_simple": (
             "Bayangkan manajer gedung pencakar langit yang sangat disiplin. Gedung tersebut memiliki fasilitas bersama: "
             "generator listrik, saluran pendingin udara AC, dan lift penumpang. Para penyewa kantor di lantai 5 tidak boleh "
@@ -192,7 +192,7 @@ CURRICULUM_PART4A = {
     },
 
     "f-modules-packages": {
-        "summary": "Organisasi kode modular, enkapsulasi namespace, dan mekanisme ekspor-impor komponen mandiri.",
+        "summary": "Memecah kode menjadi berkas-berkas terpisah agar rapi dan mudah dipakai ulang.",
         "explanation_simple": (
             "Bayangkan bermain dengan satu set balok mainan Lego bertema kastil. "
             "Di dalam kotak, kepingan balok tidak dicampur aduk berantakan dalam satu kantong plastik besar. "
@@ -255,7 +255,7 @@ CURRICULUM_PART4A = {
     },
 
     "f-dependencies": {
-        "summary": "Manajemen pustaka pihak ketiga, resolusi versi semantik, dan pengendalian rantai pasokan kode eksternal.",
+        "summary": "Memasang dan mengelola pustaka buatan orang lain secara aman dan terkontrol.",
         "explanation_simple": (
             "Bayangkan kamu membuka restoran pizza Italia. Kamu adalah koki ahli yang membuat adonan pizza lezat dengan resep rahasia sendiri. "
             "Namun, kamu tidak perlu beternak sapi sendiri untuk memerah keju mozzarella, dan tidak perlu menanam ladang gandum sendiri untuk menggiling terigu. "
@@ -318,7 +318,7 @@ CURRICULUM_PART4A = {
     },
 
     "f-build-compilation": {
-        "summary": "Transformasi kode sumber manusia menjadi artefak biner yang dapat dieksekusi oleh mesin target.",
+        "summary": "Mengubah tulisan kode menjadi berkas aplikasi yang siap dijalankan perangkat.",
         "explanation_simple": (
             "Bayangkan menulis naskah film berbahasa Indonesia lalu ingin memutarnya di bioskop Jepang. "
             "Proses produksi tidak hanya menerjemahkan teks dialog ke huruf Kanji, tetapi juga merekam dubbing suara pengisi suara Jepang, "
@@ -385,7 +385,7 @@ CURRICULUM_PART4A = {
     },
 
     "f-runtime": {
-        "summary": "Lingkungan eksekusi perangkat lunak yang mengelola siklus hidup proses, mesin virtual, dan alokasi sumber daya.",
+        "summary": "Lingkungan tempat kode berjalan dan dieksekusi oleh komputer.",
         "explanation_simple": (
             "Bayangkan panggung pertunjukan teater musikal. Naskah drama dan partitur musik yang ditulis sutradara adalah kode program. "
             "Namun agar pertunjukan dapat dinikmati penonton, dibutuhkan panggung megah yang dilengkapi lampu sorot, pengeras suara mikrofon, "
@@ -448,7 +448,7 @@ CURRICULUM_PART4A = {
     },
 
     "f-git": {
-        "summary": "Sistem kendali versi terdistribusi untuk melacak riwayat perubahan, kolaborasi percabangan, dan integritas kode sumber.",
+        "summary": "Mencatat riwayat perubahan kode dan bekerja bersama tim tanpa saling menimpa.",
         "explanation_simple": (
             "Bayangkan sebuah mesin waktu untuk naskah buku yang sedang kamu tulis bersama sepuluh penulis lain. "
             "Setiap kali kamu mencapai kemajuan penting (misalnya menyelesaikan Bab 1), kamu menekan tombol simpan khusus "
@@ -517,7 +517,7 @@ CURRICULUM_PART4A = {
     },
 
     "f-terminal": {
-        "summary": "Antarmuka baris perintah (CLI) untuk pengendalian sistem operasi, otomatisasi proses, dan manipulasi data langsung.",
+        "summary": "Memberi instruksi ke komputer secara langsung lewat baris perintah teks.",
         "explanation_simple": (
             "Bayangkan memesan makanan di restoran mewah melalui pelayan yang membawa buku menu bergambar (Antarmuka Grafis / GUI): "
             "kamu menunjuk foto makanan, memilih dari opsi yang sudah disediakan, dan prosesnya terasa santai serta visual. "
@@ -580,7 +580,7 @@ CURRICULUM_PART4A = {
     },
 
     "f-networking": {
-        "summary": "Prinsip transmisi paket data melalui jaringan komputer, model hierarki OSI, dan protokol transport TCP/UDP.",
+        "summary": "Cara komputer saling bertukar data melalui kabel, sinyal, dan internet.",
         "explanation_simple": (
             "Bayangkan mengirim surat pos dari Jakarta ke sahabatmu di pedalaman London. Kamu memasukkan surat ke dalam amplop, "
             "menuliskan nama penerima, alamat jalan, kode pos kota, dan negara tujuan. "
@@ -648,7 +648,7 @@ CURRICULUM_PART4A = {
     },
 
     "f-http-web": {
-        "summary": "Protokol komunikasi lapisan aplikasi yang menjadi fondasi pertukaran informasi World Wide Web.",
+        "summary": "Aturan komunikasi web untuk meminta dan mengirim halaman atau data.",
         "explanation_simple": (
             "Bayangkan memesan hidangan di restoran mewah melalui pelayan. Kamu sebagai tamu (Client / Browser) membaca daftar menu "
             "lalu menyampaikan pesanan ke pelayan: 'Tolong ambilkan Nasi Goreng Spesial' (HTTP Request). "

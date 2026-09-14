@@ -4,7 +4,7 @@ Includes Benchmark 4 (e-frontend-overview).
 
 ECOSYSTEM_CURRICULUM_PART1 = {
     "e-languages-overview": {
-        "summary": "Peta lanskap bahasa pemrograman di industri software dan kriteria pemilihan teknologi.",
+        "summary": "Mengenal ragam bahasa pemrograman dan memilih yang paling pas untuk kebutuhanmu.",
         "explanation_simple": (
             "Bayangkan kotak perkakas seorang montir mobil profesional. Di dalamnya terdapat kunci pas, obeng kembang, "
             "tang jepit, dan mesin las listrik. Setiap alat diciptakan untuk pekerjaan khusus: kamu tidak menggunakan mesin las "
@@ -70,7 +70,7 @@ ECOSYSTEM_CURRICULUM_PART1 = {
     },
 
     "e-compilers-overview": {
-        "summary": "Mesin penerjemah kode sumber manusia menjadi biner eksekusi mesin atau representasi perantara.",
+        "summary": "Melihat bagaimana compiler menerjemahkan kode menjadi bahasa mesin.",
         "explanation_simple": (
             "Bayangkan dua jenis penerjemah bahasa asing di sebuah konferensi internasional. "
             "Penerjemah pertama adalah Penerjemah Buku (Compiler): ia membaca naskah pidato dari awal sampai akhir, mengedit tata bahasa, "
@@ -133,7 +133,7 @@ ECOSYSTEM_CURRICULUM_PART1 = {
     },
 
     "e-runtime-overview": {
-        "summary": "Mesin lingkungan eksekusi modern (Node.js, Deno, Bun, Dart VM) dan perannya dalam ekosistem server serta desktop.",
+        "summary": "Mengenal mesin eksekusi seperti Node.js, Bun, dan Dart VM di dunia nyata.",
         "explanation_simple": (
             "Bayangkan mesin mobil listrik bertenaga baterai. Baterai dan motor penggeraknya adalah runtime engine. "
             "Baterai yang sama (mesin V8) awalnya hanya dirancang untuk menggerakkan mobil sedan di jalan raya kota (browser web Google Chrome). "
@@ -197,7 +197,7 @@ ECOSYSTEM_CURRICULUM_PART1 = {
     },
 
     "e-package-managers-overview": {
-        "summary": "Perangkat lunak pengelola dependensi eksternal, registri publik, dan resolusi rantai pasok software.",
+        "summary": "Alat pengunduh dan pengelola pustaka eksternal seperti npm, pip, dan pub.",
         "explanation_simple": (
             "Bayangkan toko aplikasi digital (seperti App Store atau Google Play) khusus untuk para programmer. "
             "Ketika kamu ingin menambahkan fitur pemindaian barcode atau grafik animasi ke kodemu, kamu tidak perlu mencari "
@@ -259,7 +259,7 @@ ECOSYSTEM_CURRICULUM_PART1 = {
     },
 
     "e-build-tools-overview": {
-        "summary": "Otomatisasi rantai build, bundling aset, transpiler, minifikasi, dan module bundler modern.",
+        "summary": "Alat otomatisasi untuk merapikan, menggabungkan, dan menyiapkan kode sebelum rilis.",
         "explanation_simple": (
             "Bayangkan dapur restoran koki bintang lima yang sedang bersiap menghadapi jam makan malam. "
             "Asisten koki tidak memotong bawang satu per satu saat pesanan masuk. "
@@ -325,7 +325,7 @@ ECOSYSTEM_CURRICULUM_PART1 = {
     },
 
     "e-frameworks-overview": {
-        "summary": "Fondasi struktural perangkat lunak yang menetapkan arsitektur kontrol dan pola desain aplikasi.",
+        "summary": "Kerangka kerja siap pakai yang memandu struktur dan aturan pembuatan aplikasi.",
         "explanation_simple": (
             "Bayangkan membeli rumah tipe perumahan klaster siap huni. Rangka tiang beton penopang rumah, denah kamar tidur, "
             "instalasi pipa air bawah tanah, dan jalur kabel listrik sudah dipasang kokoh oleh developer perumahan. "
@@ -388,7 +388,7 @@ ECOSYSTEM_CURRICULUM_PART1 = {
     },
 
     "e-libraries-overview": {
-        "summary": "Kumpulan fungsi dan modul spesifik yang dapat dipanggil untuk menyelesaikan tugas komputasi terisolasi.",
+        "summary": "Kumpulan fungsi siap pakai yang bisa langsung dipanggil untuk tugas tertentu.",
         "explanation_simple": (
             "Bayangkan kamu sedang memasak di dapur rumahmu sendiri. Dapurmu adalah milikmu sepenuhnya: "
             "kamu yang memutuskan kapan menyalakan kompor dan menu apa yang ingin kamu masak hari ini (kamu memegang kendali). "
@@ -452,7 +452,7 @@ ECOSYSTEM_CURRICULUM_PART1 = {
     },
 
     "e-orm-overview": {
-        "summary": "Pemetaan objek relasional (Object-Relational Mapping) dan lapisan abstraksi database query builder.",
+        "summary": "Penghubung agar kita bisa mengolah basis data menggunakan objek kode biasa.",
         "explanation_simple": (
             "Bayangkan dua orang yang bekerja sama tetapi berbicara dalam bahasa yang sangat berbeda: "
             "satu adalah Insinyur Pemrograman yang hanya berbicara dalam konsep Objek dan Class (bahasa Dart/TypeScript), "
@@ -516,7 +516,7 @@ ECOSYSTEM_CURRICULUM_PART1 = {
     },
 
     "e-frontend-overview": {
-        "summary": "Arsitektur presentasi visual, interaksi pengguna berbasis antarmuka klien, dan ekosistem rekayasa web modern.",
+        "summary": "Dunia pembuatan antarmuka visual dan interaksi yang langsung dilihat oleh pengguna.",
         "explanation_simple": (
             "Bayangkan etalase toko roti dan meja resepsionis di lobi depan sebuah hotel berbintang. "
             "Tamu hotel (pengguna aplikasi) tidak pernah melihat dapur bawah tanah tempat adonan roti dipanggang atau ruang generator listrik gedung (backend server). "
@@ -595,7 +595,7 @@ ECOSYSTEM_CURRICULUM_PART1 = {
     },
 
     "e-backend-overview": {
-        "summary": "Arsitektur sisi server, pemrosesan logika bisnis, transaksi database, dan keamanan data terpusat.",
+        "summary": "Sisi balik layar yang mengurus logika bisnis, simpanan data, dan keamanan server.",
         "explanation_simple": (
             "Bayangkan dapur restoran bintang lima yang berada di balik pintu tertutup lobi depan. "
             "Di dapur inilah kompor gas berkobar, koki memotong daging berkualitas, bumbu rahasia diracik sesuai resep warisan, "

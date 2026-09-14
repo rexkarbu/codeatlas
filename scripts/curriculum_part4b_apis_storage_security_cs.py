@@ -4,7 +4,7 @@ Completes all 47 Fundamental Topics!
 
 CURRICULUM_PART4B = {
     "f-apis": {
-        "summary": "Antarmuka kontrak komunikasi terstandarisasi yang menghubungkan sistem perangkat lunak independen.",
+        "summary": "Pintu penghubung agar dua aplikasi atau sistem berbeda bisa saling berbicara.",
         "explanation_simple": (
             "Bayangkan colokan listrik dinding di rumahmu. Perusahaan listrik PLN tidak mengizinkanmu menyambungkan kabel tembaga telanjang "
             "langsung ke gardu trafo tegangan tinggi. Sebagai gantinya, mereka menyediakan stopkontak dua lubang berstandar 220 Volt di dinding kamar. "
@@ -67,7 +67,7 @@ CURRICULUM_PART4B = {
     },
 
     "f-serialization": {
-        "summary": "Proses konversi struktur data objek di memori menjadi format byte atau teks linear untuk transmisi dan penyimpanan permanen.",
+        "summary": "Mengubah data di memori menjadi format teks seperti JSON agar bisa dikirim atau disimpan.",
         "explanation_simple": (
             "Bayangkan kamu membeli lemari pakaian kayu besar dari toko furnitur online. "
             "Pihak toko tidak bisa mengirimkan lemari yang sudah terpasang utuh begitu saja ke dalam mobil kurir kecil karena ukurannya memakan tempat. "
@@ -134,7 +134,7 @@ CURRICULUM_PART4B = {
     },
 
     "f-databases": {
-        "summary": "Sistem penyimpanan terkelola untuk persistensi, integritas, dan pengambilan data terstruktur dalam skala besar.",
+        "summary": "Tempat menyimpan data aplikasi dalam jumlah besar dengan rapi, aman, dan cepat dicari.",
         "explanation_simple": (
             "Bayangkan buku besar pencatatan kas di bank desa. Jika pencatatan uang nasabah hanya ditulis di secarik kertas catatan tempel, "
             "kertas tersebut bisa terbang tertiup angin, basah terkena kopi, atau salah dijumlahkan saat pembukuan akhir tahun. "
@@ -199,7 +199,7 @@ CURRICULUM_PART4B = {
     },
 
     "f-sql": {
-        "summary": "Bahasa deklaratif terstandarisasi untuk mendefinisikan, memanipulasi, dan meminta data dari basis data relasional.",
+        "summary": "Bahasa perintah untuk meminta, menambah, dan mengubah data di basis data relasional.",
         "explanation_simple": (
             "Bayangkan kamu memesan hidangan prasmanan ke penyedia katering pesta. "
             "Kamu tidak perlu memberi tahu juru masak: 'Ambil pisau, iris bawang, nyalakan kompor gas suhu 150 derajat selama 12 menit'. "
@@ -265,7 +265,7 @@ CURRICULUM_PART4B = {
     },
 
     "f-data-modeling": {
-        "summary": "Perancangan skema relasi entitas, penegakan integritas data, dan normalisasi struktur basis data.",
+        "summary": "Merancang struktur tabel dan hubungan antardata sebelum aplikasi dibangun.",
         "explanation_simple": (
             "Bayangkan kamu sedang merancang denah arsitektur rumah bertingkat sebelum tukang bangunan meletakkan batu bata pertama. "
             "Kamu memutuskan kamar tidur berada di lantai dua, dapur di lantai satu dekat saluran pipa air, dan pintu garasi memiliki akses langsung ke jalan raya. "
@@ -330,7 +330,7 @@ CURRICULUM_PART4B = {
     },
 
     "f-auth": {
-        "summary": "Protokol verifikasi identitas pengguna (Autentikasi) dan pembatasan hak akses sumber daya (Otorisasi).",
+        "summary": "Memeriksa siapa pengguna yang masuk dan apa saja hak akses yang dimilikinya.",
         "explanation_simple": (
             "Bayangkan pergi menonton festival konser musik internasional. Di pintu gerbang terluar, petugas keamanan memeriksa KTP "
             "dan wajahmu untuk memastikan kamu adalah orang yang sesungguhnya (Autentikasi / Authentication: Siapa Kamu?). "
@@ -397,7 +397,7 @@ CURRICULUM_PART4B = {
     },
 
     "f-security": {
-        "summary": "Prinsip perlindungan sistem terhadap ancaman siber, pencegahan celah kerentanan perangkat lunak, dan pertahanan berlapis.",
+        "summary": "Menjaga aplikasi dari celah bahaya dan serangan pihak yang tidak berhak.",
         "explanation_simple": (
             "Bayangkan brankas penyimpanan uang emas di bank sentral. Bank tidak hanya mengandalkan satu pintu pagar depan yang tipis. "
             "Mereka menerapkan pertahanan berlapis (Defense in Depth): ada pos penjaga bersenjata di gerbang luar, kamera pengawas sensor gerak, "
@@ -461,7 +461,7 @@ CURRICULUM_PART4B = {
     },
 
     "f-deployment": {
-        "summary": "Proses otomatisasi perilisan, pengemasan lingkungan, dan pengoperasian perangkat lunak di server produksi.",
+        "summary": "Menerbangkan aplikasi dari komputer lokal ke server agar bisa diakses pengguna umum.",
         "explanation_simple": (
             "Bayangkan merakit pesawat terbang komersial. Kamu dan tim teknisi merakit dan menguji mesin pesawat di hanggar tertutup pabrik (Lingkungan Development). "
             "Setelah pesawat siap, kamu membawanya ke landasan uji coba khusus yang meniru kondisi cuaca asli untuk uji terbang simulasi pilot (Lingkungan Staging). "
@@ -525,7 +525,7 @@ CURRICULUM_PART4B = {
     },
 
     "f-logging-monitoring": {
-        "summary": "Perekaman peristiwa sistem, pemantauan metrik kesehatan performa, dan instrumentasi observabilitas produksi.",
+        "summary": "Mencatat aktivitas dan memantau kesehatan aplikasi saat sudah dipakai umum.",
         "explanation_simple": (
             "Bayangkan ruang kokpit pesawat terbang modern. Di hadapan pilot terdapat ratusan instrumen dasbor: "
             "indikator ketinggian altimeter, kompas navigasi, sisa bahan bakar avtur, dan lampu peringatan tekanan kabin. "
@@ -592,7 +592,7 @@ CURRICULUM_PART4B = {
     },
 
     "f-sdlc-agile": {
-        "summary": "Metodologi siklus hidup rekayasa perangkat lunak, kolaborasi iteratif tangkas, dan pengiriman nilai berkelanjutan.",
+        "summary": "Langkah kerja dan kebiasaan tim dalam mengembangkan aplikasi secara bertahap.",
         "explanation_simple": (
             "Bayangkan memesan lukisan potret keluarga ke seorang pelukis kanvas. "
             "Metode lama (Waterfall) bekerja seperti pelukis yang mengunci diri di kamar selama 6 bulan tanpa komunikasi, "
@@ -659,7 +659,7 @@ CURRICULUM_PART4B = {
     },
 
     "f-documentation": {
-        "summary": "Penyusunan catatan arsitektur, panduan antarmuka pemrograman (API specs), dan pemeliharaan pengetahuan teknis.",
+        "summary": "Menulis catatan penjelasan agar orang lain dan diri sendiri paham cara kerja sistem.",
         "explanation_simple": (
             "Bayangkan membeli lemari kabinet modern dari toko furnitur yang dikirim dalam bentuk 50 kepingan kayu dan 100 baut kecil, "
             "tetapi di dalam kardus tidak disertakan selembar pun buku petunjuk perakitan bergambar. "
@@ -721,7 +721,7 @@ CURRICULUM_PART4B = {
     },
 
     "f-computer-science": {
-        "summary": "Landasan teoretis komputasi, sains informasi, batas kemampuan mesin Turing, dan abstraksi sistem komputasional.",
+        "summary": "Prinsip dasar sains komputer di balik cara kerja mesin hitung dan perangkat lunak.",
         "explanation_simple": (
             "Bayangkan ilmu arsitektur sipil yang mempelajari kekuatan beton dan gravitasi bumi, dibandingkan dengan tukang bangunan "
             "yang memegang sendok semen dan batu bata. Tukang bangunan tahu cara menyusun batu bata agar lurus, "

@@ -748,9 +748,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
 
     return Container(
       width: double.infinity,
-      constraints: BoxConstraints(
-        maxHeight: maxPanelHeight,
-      ),
+      constraints: BoxConstraints(maxHeight: maxPanelHeight),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
@@ -769,138 +767,138 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        topic.title,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Row(
-                        children: [
-                          _buildStatusIcon(status),
-                          const SizedBox(width: 6),
-                          Text(
-                            status.label,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          topic.title,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  tooltip: 'Tutup panel',
-                  onPressed: () => setState(() => _selectedTopicId = null),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Text(
-              topic.summary,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-            const SizedBox(height: 10),
-
-            // Prerequisites row
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Prasyarat: ',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Expanded(
-                  child: prereqs.isEmpty
-                      ? Text(
-                          'Tidak ada (langsung dipelajari)',
-                          style: theme.textTheme.labelSmall,
-                        )
-                      : Wrap(
-                          spacing: 4,
-                          runSpacing: 4,
+                        ),
+                        const SizedBox(height: 2),
+                        Row(
                           children: [
-                            for (final pid in prereqs)
-                              ActionChip(
-                                label: Text(
-                                  _topics
-                                          .where((t) => t.id == pid)
-                                          .firstOrNull
-                                          ?.title ??
-                                      pid,
-                                  style: const TextStyle(fontSize: 10),
-                                ),
-                                onPressed: () => _jumpToTopic(pid),
+                            _buildStatusIcon(status),
+                            const SizedBox(width: 6),
+                            Text(
+                              status.label,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                fontWeight: FontWeight.w600,
                               ),
+                            ),
                           ],
                         ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    tooltip: 'Tutup panel',
+                    onPressed: () => setState(() => _selectedTopicId = null),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                topic.summary,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
-              ],
-            ),
-            const SizedBox(height: 6),
+              ),
+              const SizedBox(height: 10),
 
-            // Dependents row
-            if (dependents.isNotEmpty)
+              // Prerequisites row
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Dibutuhkan oleh: ',
+                    'Prasyarat: ',
                     style: theme.textTheme.labelSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Expanded(
-                    child: Wrap(
-                      spacing: 4,
-                      runSpacing: 4,
-                      children: [
-                        for (final did in dependents)
-                          ActionChip(
-                            label: Text(
-                              _topics
-                                      .where((t) => t.id == did)
-                                      .firstOrNull
-                                      ?.title ??
-                                  did,
-                              style: const TextStyle(fontSize: 10),
-                            ),
-                            onPressed: () => _jumpToTopic(did),
+                    child: prereqs.isEmpty
+                        ? Text(
+                            'Tidak ada (langsung dipelajari)',
+                            style: theme.textTheme.labelSmall,
+                          )
+                        : Wrap(
+                            spacing: 4,
+                            runSpacing: 4,
+                            children: [
+                              for (final pid in prereqs)
+                                ActionChip(
+                                  label: Text(
+                                    _topics
+                                            .where((t) => t.id == pid)
+                                            .firstOrNull
+                                            ?.title ??
+                                        pid,
+                                    style: const TextStyle(fontSize: 10),
+                                  ),
+                                  onPressed: () => _jumpToTopic(pid),
+                                ),
+                            ],
                           ),
-                      ],
-                    ),
                   ),
                 ],
               ),
+              const SizedBox(height: 6),
 
-            const SizedBox(height: 14),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton.icon(
-                icon: const Icon(Icons.menu_book),
-                label: const Text('Buka Artikel'),
-                onPressed: () => widget.onOpenTopic(topic.id),
+              // Dependents row
+              if (dependents.isNotEmpty)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Dibutuhkan oleh: ',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Expanded(
+                      child: Wrap(
+                        spacing: 4,
+                        runSpacing: 4,
+                        children: [
+                          for (final did in dependents)
+                            ActionChip(
+                              label: Text(
+                                _topics
+                                        .where((t) => t.id == did)
+                                        .firstOrNull
+                                        ?.title ??
+                                    did,
+                                style: const TextStyle(fontSize: 10),
+                              ),
+                              onPressed: () => _jumpToTopic(did),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+              const SizedBox(height: 14),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton.icon(
+                  icon: const Icon(Icons.menu_book),
+                  label: const Text('Buka Artikel'),
+                  onPressed: () => widget.onOpenTopic(topic.id),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   // ─────────────────────────────────────────────────────────
   // 4. AKSESIBILITAS: Daftar Teks Bertingkat Alternatif

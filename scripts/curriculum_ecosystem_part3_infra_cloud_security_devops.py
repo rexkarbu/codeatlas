@@ -3,7 +3,7 @@
 
 ECOSYSTEM_CURRICULUM_PART3 = {
     "e-networking-overview": {
-        "summary": "Ekosistem jaringan komputer: model OSI/TCP-IP, DNS, TCP/UDP, routing, dan TLS untuk komunikasi internet.",
+        "summary": "Infrastruktur jaringan internet, alamat IP, nama domain (DNS), dan keamanan data.",
         "explanation_simple": (
             "Bayangkan sistem pos global yang mengirim jutaan surat dan paket setiap detik ke berbagai penjuru dunia. "
             "Agar sebuah surat tiba dari mejamu ke meja seorang rekan di belahan bumi lain, sistem pos membutuhkan alamat jalan yang jelas (IP Address), "
@@ -70,7 +70,7 @@ ECOSYSTEM_CURRICULUM_PART3 = {
         ],
     },
     "e-operating-systems-overview": {
-        "summary": "Ekosistem sistem operasi server: Linux kernel, proses, thread, sistem file, dan izin keamanan.",
+        "summary": "Mengenal sistem operasi server seperti Linux, proses latar belakang, dan izin akses.",
         "explanation_simple": (
             "Bayangkan sebuah gedung kantor modern dengan ribuan staf divisi yang bekerja secara bersamaan. "
             "Sistem Operasi (OS) adalah manajer gedung dan tim keamanan yang mengatur segalanya: "
@@ -134,7 +134,7 @@ ECOSYSTEM_CURRICULUM_PART3 = {
         ],
     },
     "e-shells-overview": {
-        "summary": "Ekosistem antarmuka baris perintah, Bash, Zsh, pipeline, manipulasi teks UNIX, dan automasi shell.",
+        "summary": "Menggunakan terminal dan skrip baris perintah untuk mempercepat pekerjaan harian.",
         "explanation_simple": (
             "Bayangkan sebuah kokpit pesawat supersonik tanpa tuas sentuh atau layar warna-warni, melainkan panel saklar instruksi teks instan. "
             "Antarmuka grafis (GUI) membatasi tindakanmu hanya pada tombol-tombol yang disediakan oleh perancang aplikasi di layar. "
@@ -198,7 +198,7 @@ ECOSYSTEM_CURRICULUM_PART3 = {
         ],
     },
     "e-web-servers-overview": {
-        "summary": "Ekosistem web server dan reverse proxy: Nginx, Apache, Caddy, SSL termination, load balancing, dan caching.",
+        "summary": "Aplikasi penerima tamu web seperti Nginx dan Caddy yang mengarahkan lalu lintas data.",
         "explanation_simple": (
             "Bayangkan sebuah hotel bintang lima dengan lobi mewah dan pintu gerbang yang dijaga petugas resepsionis berpengalaman. "
             "Tamu hotel dari seluruh dunia (browser pengguna) tidak diizinkan langsung mengetuk kamar koki di dapur belakang (server aplikasi Node.js/Go/Python). "
@@ -263,7 +263,7 @@ ECOSYSTEM_CURRICULUM_PART3 = {
         ],
     },
     "e-cloud-overview": {
-        "summary": "Ekosistem komputasi awan: AWS, GCP, Azure, model IaaS/PaaS/SaaS, serverless, dan wilayah ketersediaan (AZ).",
+        "summary": "Menyewa komputer dan layanan di awan (AWS, Google Cloud, Azure) tanpa beli server fisik.",
         "explanation_simple": (
             "Bayangkan daripada membangun generator listrik bertenaga batu bara sendiri di halaman belakang rumahmu, "
             "kamu cukup mencolokkan kabel ke stopkontak PLN dan membayar tagihan listrik hanya sesuai jumlah kilowatt yang kamu pakai bulan itu. "
@@ -328,7 +328,7 @@ ECOSYSTEM_CURRICULUM_PART3 = {
         ],
     },
     "e-iac-overview": {
-        "summary": "Ekosistem Infrastructure as Code: Terraform, OpenTofu, Ansible, Pulumi, deklaratif vs imperatif, dan state management.",
+        "summary": "Menyiapkan server dan infrastruktur cloud lewat kode otomatis (Infrastructure as Code).",
         "explanation_simple": (
             "Bayangkan kamu adalah arsitek yang merancang kota megah. "
             "Pendekatan lama seperti membangun gedung dengan memesan batu bata satu per satu melalui telepon ke berbagai toko yang berbeda: "
@@ -394,7 +394,7 @@ ECOSYSTEM_CURRICULUM_PART3 = {
         ],
     },
     "e-orchestration-overview": {
-        "summary": "Ekosistem orkestrasi kontainer: Docker, Kubernetes (K8s), Pods, Deployments, Services, Ingress, dan Helm.",
+        "summary": "Menata dan menjalankan kontainer aplikasi seperti Docker dan Kubernetes.",
         "explanation_simple": (
             "Bayangkan satu musisi pemain biola tunggal yang memainkan sebuah lagu di pinggir jalan: ia mudah diatur dan mandiri (seperti satu kontainer Docker di laptopmu). "
             "Namun bayangkan sebuah orkestra simfoni megah beranggotakan 200 musisi dengan instrumen berbeda yang harus memainkan harmoni lagu rumit di gedung konser internasional. "
@@ -464,7 +464,7 @@ ECOSYSTEM_CURRICULUM_PART3 = {
         ],
     },
     "e-testing-overview": {
-        "summary": "Ekosistem pengujian software: Unit testing, Integration testing, E2E, Piramida Tes, TDD, dan mocking.",
+        "summary": "Lanskap pengujian aplikasi di industri, dari tes fungsi kecil hingga tes tampilan menyeluruh.",
         "explanation_simple": (
             "Bayangkan pabrik perakitan mobil balap Formula 1. "
             "Sebelum mobil diuji di sirkuit dengan kecepatan 300 km/jam, setiap komponen kecil diuji secara mandiri di laboratorium: "
@@ -528,7 +528,7 @@ ECOSYSTEM_CURRICULUM_PART3 = {
         ],
     },
     "e-debugging-overview": {
-        "summary": "Ekosistem debugging modern: Breakpoints, call stack, profiler memori, debugging interaktif, dan analisis post-mortem.",
+        "summary": "Alat bantu melacak bug di industri, titik henti kode (breakpoints), dan rekaman riwayat.",
         "explanation_simple": (
             "Bayangkan kamu adalah seorang detektif yang tiba di tempat kejadian perkara di sebuah ruangan terkunci. "
             "Pendekatan pemula adalah menyalakan kembang api dan menempelkan catatan tempel di setiap sudut meja berharap petunjuk muncul sendiri (`print('sampai sini')` atau `console.log('test')`). "
@@ -594,7 +594,7 @@ ECOSYSTEM_CURRICULUM_PART3 = {
         ],
     },
     "e-security-overview": {
-        "summary": "Ekosistem keamanan aplikasi web: OWASP Top 10, SQL Injection, XSS, CSRF, enkripsi, dan sanitasi input.",
+        "summary": "Celah bahaya umum di aplikasi web dan cara menangkalnya sejak awal.",
         "explanation_simple": (
             "Bayangkan kamu mengelola sebuah bank megah dengan loket kaca tebal antipeluru. "
             "Setiap hari ribuan nasabah menyodorkan secarik kertas formulir setor tunai melalui celah loket. "
@@ -657,7 +657,7 @@ ECOSYSTEM_CURRICULUM_PART3 = {
         ],
     },
     "e-cybersecurity-overview": {
-        "summary": "Ekosistem keamanan siber: Zero Trust, pertahanan berlapis, kriptografi, CVE, eksploitasi, dan mitigasi ancaman.",
+        "summary": "Prinsip keamanan menyeluruh untuk melindungi data rahasia dan jaringan bisnis.",
         "explanation_simple": (
             "Bayangkan sebuah pangkalan militer berkubah baja dengan rahasia kenegaraan penting di dalamnya. "
             "Model keamanan kuno berasumsi bahwa siapa pun yang sudah berhasil masuk melewati gerbang depan adalah kawan terpercaya yang boleh membuka seluruh pintu ruangan (Perimeter Security). "
@@ -722,7 +722,7 @@ ECOSYSTEM_CURRICULUM_PART3 = {
         ],
     },
     "e-accessibility-overview": {
-        "summary": "Ekosistem aksesibilitas digital (a11y): Standar WCAG, screen reader, HTML semantik, keyboard navigation, dan ARIA.",
+        "summary": "Membuat aplikasi ramah bagi semua pengguna, termasuk penyandang disabilitas.",
         "explanation_simple": (
             "Bayangkan sebuah gedung perpustakaan umum megah yang pintunya hanya bisa dibuka dengan menaiki tangga curam 50 anak tangga tanpa ramp kursi roda, "
             "dan seluruh buku di dalamnya ditulis dengan tinta kuning pucat di atas kertas putih silau tanpa label judul di punggung buku. "
@@ -786,7 +786,7 @@ ECOSYSTEM_CURRICULUM_PART3 = {
         ],
     },
     "e-devops-overview": {
-        "summary": "Ekosistem DevOps: Budaya kolaborasi, CI/CD pipelines, GitOps, otomasi rilis, dan feedback loop cepat.",
+        "summary": "Budaya dan jalur otomatisasi dari penulisan kode hingga aplikasi siap dinikmati pengguna.",
         "explanation_simple": (
             "Bayangkan sebuah restoran di mana koki masak di dapur dan pelayan di meja makan saling membenci dan dipisahkan oleh dinding bata tebal. "
             "Koki melempar piring makanan ke jendela lubang dinding dan berkata: 'Masakanku sudah selesai, jika tamu mengeluh makanannya dingin, itu urusan pelayan!'. "
@@ -851,7 +851,7 @@ ECOSYSTEM_CURRICULUM_PART3 = {
         ],
     },
     "e-observability-overview": {
-        "summary": "Ekosistem observabilitas sistem: Tiga pilar (Metrics, Logs, Traces), OpenTelemetry, Prometheus, Grafana, dan alerting.",
+        "summary": "Melihat kondisi jeroan aplikasi lewat log, angka performa, dan jejak panggilan sistem.",
         "explanation_simple": (
             "Bayangkan kamu adalah dokter spesialis di ruang Unit Gawat Darurat (UGD) yang merawat pasien kritis. "
             "Dokter tidak bisa membedah tubuh pasien setiap detik hanya untuk melihat apakah jantungnya berdetak. "
@@ -914,7 +914,7 @@ ECOSYSTEM_CURRICULUM_PART3 = {
         ],
     },
     "e-production-overview": {
-        "summary": "Ekosistem rilis produksi: Blue-Green deployment, Canary releases, database migration zero-downtime, dan rollback.",
+        "summary": "Strategi memperbarui aplikasi di server produksi dengan aman tanpa memutus layanan pengguna.",
         "explanation_simple": (
             "Bayangkan sebuah pesawat komersial Boeing 777 yang sedang terbang di ketinggian 30.000 kaki membawa 300 penumpang. "
             "Tim mekanik maskapai ingin mengganti mesin jet pesawat tersebut dengan mesin generasi terbaru yang lebih hemat bahan bakar. "
@@ -979,7 +979,7 @@ ECOSYSTEM_CURRICULUM_PART3 = {
         ],
     },
     "e-developer-tools-overview": {
-        "summary": "Ekosistem alat pengembang: Git, Language Server Protocol (LSP), linters, formatters, bundlers, dan automasi editor.",
+        "summary": "Peralatan andalan developer: editor kode, pemeriksa kerapian, dan bantuan otomatis.",
         "explanation_simple": (
             "Bayangkan seorang tukang kayu ulung yang bekerja di bengkel modern. "
             "Ia tidak menghaluskan kayu gelondongan raksasa hanya dengan amplas kertas manual atau mengukur panjang balok dengan jengkal jari tangannya. "

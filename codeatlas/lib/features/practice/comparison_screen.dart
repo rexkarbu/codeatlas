@@ -1,5 +1,6 @@
 // lib/features/practice/comparison_screen.dart — F08: Side-by-side syntax
-// comparison with horizontal swipe cards on mobile.
+// comparison with single concept selector bottom sheet, default vertical stack,
+// Indonesian concept labels, and consistent language casing.
 
 import 'package:flutter/material.dart';
 
@@ -28,6 +29,38 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
   bool _loading = true;
   bool? _userVerticalPreference;
 
+  static const Map<String, String> _conceptLabels = {
+    'sequence': 'Urutan Instruksi',
+    'variables': 'Variabel',
+    'operators': 'Operator',
+    'conditionals': 'Percabangan',
+    'loops': 'Perulangan',
+    'functions': 'Fungsi',
+    'lists': 'List / Array',
+    'classes': 'Class dan Objek',
+    'error-handling': 'Penanganan Kesalahan',
+    'async': 'Pemrograman Asinkron',
+  };
+
+  static String _getConceptLabel(String key) {
+    return _conceptLabels[key] ?? key;
+  }
+
+  static String _formatLanguageName(String lang) {
+    switch (lang.toLowerCase()) {
+      case 'dart':
+        return 'Dart';
+      case 'python':
+        return 'Python';
+      case 'typescript':
+        return 'TypeScript';
+      default:
+        return lang.isNotEmpty
+            ? '${lang[0].toUpperCase()}${lang.substring(1)}'
+            : lang;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -44,6 +77,9 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
         _allLanguages = languages;
         _selectedLanguages = Set.from(languages); // Select all by default
         _loading = false;
+        if (groups.isNotEmpty) {
+          _selectedGroup = groups.first;
+        }
       });
     }
   }
@@ -56,9 +92,87 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
     }).toList();
   }
 
+  void _showConceptPicker(List<ComparisonGroup> groups) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.compare_arrows),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Pilih Konsep Sintaks',
+                            style: Theme.of(sheetContext).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: () => Navigator.pop(sheetContext),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Divider(height: 1),
+                  for (final group in groups)
+                    ListTile(
+                      key: ValueKey(
+                        'concept_option_${group.topicId}_${group.comparisonKey}',
+                      ),
+                      title: Text(_getConceptLabel(group.comparisonKey)),
+                      subtitle: Text(group.topicTitle),
+                      selected:
+                          _selectedGroup?.topicId == group.topicId &&
+                          _selectedGroup?.comparisonKey == group.comparisonKey,
+                      trailing:
+                          (_selectedGroup?.topicId == group.topicId &&
+                              _selectedGroup?.comparisonKey ==
+                                  group.comparisonKey)
+                          ? const Icon(Icons.check, color: Colors.green)
+                          : null,
+                      onTap: () {
+                        setState(() => _selectedGroup = group);
+                        Navigator.pop(sheetContext);
+                      },
+                    ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final filtered = _filteredGroups;
+
+    // Ensure active group is valid
+    ComparisonGroup? activeGroup = _selectedGroup;
+    if (activeGroup != null && !filtered.contains(activeGroup)) {
+      activeGroup = filtered.isNotEmpty ? filtered.first : null;
+    } else if (activeGroup == null && filtered.isNotEmpty) {
+      activeGroup = filtered.first;
+    }
 
     return Scaffold(
       appBar: AppBar(title: const Text('Perbandingan Sintaks')),
@@ -85,7 +199,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
                         children: [
                           for (final lang in _allLanguages.toList()..sort())
                             FilterChip(
-                              label: Text(lang),
+                              label: Text(_formatLanguageName(lang)),
                               selected: _selectedLanguages.contains(lang),
                               onSelected: (sel) {
                                 setState(() {
@@ -96,7 +210,6 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
                                   } else {
                                     _selectedLanguages.remove(lang);
                                   }
-                                  _selectedGroup = null;
                                 });
                               },
                             ),
@@ -107,36 +220,58 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
                 ),
                 const Divider(height: 1),
 
-                // Group selector
-                if (_filteredGroups.isNotEmpty)
-                  SizedBox(
-                    height: 48,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                // Single Concept Selector Button
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  child: OutlinedButton.icon(
+                    key: const ValueKey('concept_selector_button'),
+                    onPressed: filtered.isEmpty
+                        ? null
+                        : () => _showConceptPicker(filtered),
+                    icon: const Icon(Icons.menu_book),
+                    label: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        for (final group in _filteredGroups)
-                          Padding(
-                            padding: const EdgeInsets.only(right: 6),
-                            child: ChoiceChip(
-                              label: Text(group.comparisonKey),
-                              selected: _selectedGroup == group,
-                              onSelected: (sel) {
-                                setState(() {
-                                  _selectedGroup = sel ? group : null;
-                                });
-                              },
-                            ),
+                        Expanded(
+                          child: Text(
+                            activeGroup != null
+                                ? 'Konsep: ${_getConceptLabel(activeGroup.comparisonKey)}'
+                                : 'Pilih Konsep...',
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
+                        ),
+                        const Icon(Icons.arrow_drop_down),
                       ],
                     ),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                    ),
                   ),
+                ),
 
                 // Comparison display
                 Expanded(
-                  child: _selectedGroup == null
-                      ? _buildGroupList()
-                      : _buildComparison(_selectedGroup!),
+                  child: filtered.isEmpty
+                      ? Center(
+                          child: Text(
+                            _selectedLanguages.length < 2
+                                ? 'Pilih minimal 2 bahasa untuk melihat perbandingan'
+                                : 'Tidak ada perbandingan untuk bahasa terpilih',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        )
+                      : activeGroup == null
+                      ? const SizedBox.shrink()
+                      : _buildComparison(activeGroup),
                 ),
               ],
             ),
@@ -149,53 +284,21 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
     );
   }
 
-  Widget _buildGroupList() {
-    final groups = _filteredGroups;
-    if (groups.isEmpty) {
-      return Center(
-        child: Text(
-          _selectedLanguages.length < 2
-              ? 'Pilih minimal 2 bahasa'
-              : 'Tidak ada perbandingan untuk bahasa terpilih',
-        ),
-      );
-    }
-
-    return ListView.builder(
-      padding: const EdgeInsets.all(12),
-      itemCount: groups.length,
-      itemBuilder: (context, index) {
-        final group = groups[index];
-        final langs = group.examples.map((e) => e.language).toSet().join(', ');
-        return Card(
-          child: ListTile(
-            title: Text(group.comparisonKey),
-            subtitle: Text('${group.topicTitle} • $langs'),
-            trailing: const Icon(Icons.compare_arrows),
-            onTap: () {
-              setState(() => _selectedGroup = group);
-            },
-          ),
-        );
-      },
-    );
-  }
-
   Widget _buildComparison(ComparisonGroup group) {
     final theme = Theme.of(context);
     final filteredExamples = group.examples
         .where((e) => _selectedLanguages.contains(e.language))
         .toList();
 
-    final isLargeText = MediaQuery.textScalerOf(context).scale(1) > 1.3;
-    final useVertical = _userVerticalPreference ?? isLargeText;
+    // Default to vertical stack on mobile; can be toggled by user
+    final useVertical = _userVerticalPreference ?? true;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Topic link & layout toggle
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           child: Row(
             children: [
               Expanded(
@@ -203,7 +306,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      group.comparisonKey,
+                      _getConceptLabel(group.comparisonKey),
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -238,6 +341,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
             ],
           ),
         ),
+
         // Layout view: vertical stack or horizontal swipe
         Expanded(
           child: useVertical
@@ -256,9 +360,10 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
                           padding: const EdgeInsets.all(16),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                example.language.toUpperCase(),
+                                _formatLanguageName(example.language),
                                 style: theme.textTheme.titleSmall?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: theme.colorScheme.primary,
@@ -267,13 +372,16 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
                               const SizedBox(height: 4),
                               Text(
                                 example.label,
-                                style: theme.textTheme.bodySmall,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  fontWeight: FontWeight.normal,
+                                ),
                               ),
                               const SizedBox(height: 8),
                               CodeSnippet(
                                 code: example.code,
-                                language: example.language,
+                                language: _formatLanguageName(example.language),
                                 expectedOutput: example.expectedOutput,
+                                showLanguageLabel: false,
                               ),
                               if (example.explanation.isNotEmpty) ...[
                                 const SizedBox(height: 8),
@@ -281,6 +389,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
                                   example.explanation,
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: theme.colorScheme.onSurfaceVariant,
+                                    fontWeight: FontWeight.normal,
                                   ),
                                 ),
                               ],
@@ -307,9 +416,10 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
                           child: SingleChildScrollView(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  example.language.toUpperCase(),
+                                  _formatLanguageName(example.language),
                                   style: theme.textTheme.titleSmall?.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: theme.colorScheme.primary,
@@ -318,13 +428,18 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
                                 const SizedBox(height: 4),
                                 Text(
                                   example.label,
-                                  style: theme.textTheme.bodySmall,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    fontWeight: FontWeight.normal,
+                                  ),
                                 ),
                                 const SizedBox(height: 8),
                                 CodeSnippet(
                                   code: example.code,
-                                  language: example.language,
+                                  language: _formatLanguageName(
+                                    example.language,
+                                  ),
                                   expectedOutput: example.expectedOutput,
+                                  showLanguageLabel: false,
                                 ),
                                 if (example.explanation.isNotEmpty) ...[
                                   const SizedBox(height: 8),
@@ -332,6 +447,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
                                     example.explanation,
                                     style: theme.textTheme.bodySmall?.copyWith(
                                       color: theme.colorScheme.onSurfaceVariant,
+                                      fontWeight: FontWeight.normal,
                                     ),
                                   ),
                                 ],
@@ -355,7 +471,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3),
                     child: Text(
-                      filteredExamples[i].language,
+                      _formatLanguageName(filteredExamples[i].language),
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),

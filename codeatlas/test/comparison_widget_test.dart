@@ -1,5 +1,6 @@
 // test/comparison_widget_test.dart — Widget test for ComparisonScreen:
-// 200% text scale, vertical layout alternative, and layout toggle button.
+// 200% text scale, 360/400px widths, concept selector bottom sheet,
+// 2 and 3 language selections, and layout toggle button.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -27,7 +28,7 @@ class FakeComparisonContentRepository implements ContentRepository {
 }
 
 void main() {
-  group('ComparisonScreen 200% Text Scale & Layout Toggle Tests (PRD 2.B)', () {
+  group('ComparisonScreen UI & Adaptability Tests', () {
     late FakeComparisonContentRepository fakeRepo;
 
     setUp(() {
@@ -59,29 +60,53 @@ void main() {
         ),
       ];
 
-      final mockGroup = ComparisonGroup(
+      final mockGroup1 = ComparisonGroup(
         comparisonKey: 'variables',
         topicId: 'f-variables-data-types',
-        topicTitle: 'Variabel dan Tipe Data',
+        topicTitle: 'Variables & Data Types',
         examples: mockExamples,
       );
 
+      final mockGroup2 = ComparisonGroup(
+        comparisonKey: 'sequence',
+        topicId: 'f-programming-logic',
+        topicTitle: 'Programming Logic',
+        examples: [
+          const CodeExample(
+            language: 'Dart',
+            comparisonKey: 'sequence',
+            label: 'Dart Sequence',
+            code: 'print("Langkah 1");\nprint("Langkah 2");',
+            explanation: 'Instruksi sekuensial.',
+            expectedOutput: 'Langkah 1\nLangkah 2',
+          ),
+          const CodeExample(
+            language: 'TypeScript',
+            comparisonKey: 'sequence',
+            label: 'TypeScript Sequence',
+            code: 'console.log("Langkah 1");\nconsole.log("Langkah 2");',
+            explanation: 'Instruksi sekuensial.',
+            expectedOutput: 'Langkah 1\nLangkah 2',
+          ),
+        ],
+      );
+
       fakeRepo = FakeComparisonContentRepository(
-        groups: [mockGroup],
+        groups: [mockGroup1, mockGroup2],
         languages: {'Dart', 'TypeScript', 'Python'},
       );
     });
 
     testWidgets(
-      '200% text scale auto-switches to vertical layout and displays all 3 languages without overflow',
+      '200% text scale on 360px width defaults to vertical layout without overflow',
       (tester) async {
-        // Set up 200% text scale factor (TextScaler.linear(2.0))
+        // Set up 200% text scale factor on 360 logical px width
         await tester.pumpWidget(
           MaterialApp(
             home: MediaQuery(
               data: const MediaQueryData(
                 textScaler: TextScaler.linear(2.0),
-                size: Size(500, 1600),
+                size: Size(360, 1600),
               ),
               child: ComparisonScreen(
                 contentRepo: fakeRepo,
@@ -92,15 +117,14 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // 1. Initially lists the comparison group chip
-        expect(find.widgetWithText(ChoiceChip, 'variables'), findsOneWidget);
-        expect(find.textContaining('Variabel dan Tipe Data'), findsOneWidget);
+        // 1. Concept selector button is rendered with Indonesian label
+        expect(
+          find.byKey(const ValueKey('concept_selector_button')),
+          findsOneWidget,
+        );
+        expect(find.textContaining('Konsep: Variabel'), findsOneWidget);
 
-        // Tap group to view comparison
-        await tester.tap(find.widgetWithText(ChoiceChip, 'variables'));
-        await tester.pumpAndSettle();
-
-        // 2. Under 200% scale, layout defaults to vertical stacked list (ListView)
+        // 2. Defaults to vertical stacked list (ListView)
         // Verify Dart card is rendered first
         expect(
           find.descendant(of: find.byType(Card), matching: find.text('Dart')),
@@ -137,14 +161,14 @@ void main() {
     );
 
     testWidgets(
-      'Layout toggle button toggles between vertical list and horizontal swipe',
+      'Concept selector button opens bottom sheet and changes selected concept',
       (tester) async {
         await tester.pumpWidget(
           MaterialApp(
             home: MediaQuery(
               data: const MediaQueryData(
                 textScaler: TextScaler.linear(1.0),
-                size: Size(500, 900),
+                size: Size(400, 900),
               ),
               child: ComparisonScreen(
                 contentRepo: fakeRepo,
@@ -155,48 +179,160 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // Open comparison
-        await tester.tap(find.widgetWithText(ChoiceChip, 'variables'));
+        // 1. Initial concept is 'variables' ('Variabel')
+        expect(find.textContaining('Konsep: Variabel'), findsOneWidget);
+
+        // 2. Tap concept selector button to open bottom sheet
+        await tester.tap(find.byKey(const ValueKey('concept_selector_button')));
         await tester.pumpAndSettle();
 
-        // Default on scale 1.0 is horizontal PageView
-        expect(find.byType(PageView), findsOneWidget);
+        // 3. Bottom sheet displays options with Indonesian labels
+        expect(find.text('Pilih Konsep Sintaks'), findsOneWidget);
+        final optionSeqFinder = find.byKey(
+          const ValueKey('concept_option_f-programming-logic_sequence'),
+        );
+        expect(optionSeqFinder, findsOneWidget);
+        expect(find.text('Urutan Instruksi'), findsOneWidget);
 
-        // Tap toggle button to switch to vertical mode
+        // 4. Tap 'Urutan Instruksi' option
+        await tester.tap(optionSeqFinder);
+        await tester.pumpAndSettle();
+
+        // 5. Concept selector button and view are updated
+        expect(find.textContaining('Konsep: Urutan Instruksi'), findsOneWidget);
+        expect(find.textContaining('Langkah 1'), findsWidgets);
+      },
+    );
+
+    testWidgets('Language selection filter toggles between 2 and 3 languages', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MediaQuery(
+            data: const MediaQueryData(
+              textScaler: TextScaler.linear(1.0),
+              size: Size(400, 1600),
+            ),
+            child: ComparisonScreen(contentRepo: fakeRepo, onOpenTopic: (_) {}),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Initially all 3 languages (Dart, TypeScript, Python) are selected
+      expect(
+        find.descendant(of: find.byType(Card), matching: find.text('Dart')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.byType(Card),
+          matching: find.text('TypeScript'),
+        ),
+        findsOneWidget,
+      );
+
+      // Scroll to verify Python card
+      await tester.drag(find.byType(ListView).last, const Offset(0, -400));
+      await tester.pumpAndSettle();
+      expect(
+        find.descendant(of: find.byType(Card), matching: find.text('Python')),
+        findsOneWidget,
+      );
+
+      // Scroll back up to reach filter chips
+      await tester.drag(find.byType(ListView).last, const Offset(0, 400));
+      await tester.pumpAndSettle();
+
+      // Tap Python FilterChip to deselect it
+      final pythonChipFinder = find.widgetWithText(FilterChip, 'Python');
+      expect(pythonChipFinder, findsOneWidget);
+      await tester.tap(pythonChipFinder);
+      await tester.pumpAndSettle();
+
+      // Now only 2 languages are shown (Dart and TypeScript)
+      expect(
+        find.descendant(of: find.byType(Card), matching: find.text('Dart')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.byType(Card),
+          matching: find.text('TypeScript'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: find.byType(Card), matching: find.text('Python')),
+        findsNothing,
+      );
+
+      // Tap Python FilterChip again to re-select it
+      await tester.tap(pythonChipFinder);
+      await tester.pumpAndSettle();
+
+      // Scroll down to verify Python card is back
+      await tester.drag(find.byType(ListView).last, const Offset(0, -400));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.descendant(of: find.byType(Card), matching: find.text('Python')),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets(
+      'Layout toggle button toggles between vertical list and horizontal swipe',
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: MediaQuery(
+              data: const MediaQueryData(
+                textScaler: TextScaler.linear(1.0),
+                size: Size(400, 900),
+              ),
+              child: ComparisonScreen(
+                contentRepo: fakeRepo,
+                onOpenTopic: (_) {},
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Default layout is vertical (ListView of cards)
+        expect(find.byType(ListView), findsWidgets);
+        expect(find.byType(PageView), findsNothing);
+
+        // Tap toggle button to switch to horizontal mode
         final toggleBtnFinder = find.widgetWithIcon(
           IconButton,
-          Icons.view_agenda_outlined,
+          Icons.view_carousel_outlined,
         );
         expect(toggleBtnFinder, findsOneWidget);
 
         await tester.tap(toggleBtnFinder);
         await tester.pumpAndSettle();
 
-        // Now vertical mode (ListView of cards) is active, PageView is gone
-        expect(find.byType(PageView), findsNothing);
-        expect(
-          find.descendant(of: find.byType(Card), matching: find.text('Dart')),
-          findsOneWidget,
-        );
-        expect(
-          find.descendant(
-            of: find.byType(Card),
-            matching: find.text('TypeScript'),
-          ),
-          findsOneWidget,
-        );
+        // Now horizontal PageView is active
+        expect(find.byType(PageView), findsOneWidget);
 
-        // Tap toggle button again to switch back to horizontal PageView
+        // Tap toggle button again to switch back to vertical mode
         final toggleBackFinder = find.widgetWithIcon(
           IconButton,
-          Icons.view_carousel_outlined,
+          Icons.view_agenda_outlined,
         );
         expect(toggleBackFinder, findsOneWidget);
 
         await tester.tap(toggleBackFinder);
         await tester.pumpAndSettle();
 
-        expect(find.byType(PageView), findsOneWidget);
+        expect(find.byType(PageView), findsNothing);
+        expect(
+          find.descendant(of: find.byType(Card), matching: find.text('Dart')),
+          findsOneWidget,
+        );
       },
     );
   });

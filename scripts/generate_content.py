@@ -211,7 +211,7 @@ def validate_and_generate():
             insert("quizzes", row)
         insert("content_meta", {
             "id": 1,
-            "content_version": 4,
+            "content_version": 5,
             "dataset": "production",
             "locale": "id-ID"
         })
@@ -226,7 +226,7 @@ def validate_and_generate():
     # 9. Write final content.json
     production_package = {
         "format_version": 1,
-        "content_version": 4,
+        "content_version": 5,
         "dataset": "production",
         "locale": "id-ID",
         "categories": CATEGORIES,

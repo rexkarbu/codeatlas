@@ -3,7 +3,7 @@
 
 ECOSYSTEM_CURRICULUM_PART2 = {
     "e-mobile-overview": {
-        "summary": "Ekosistem pengembangan aplikasi perangkat bergerak (Android & iOS) native dan multiplatform.",
+        "summary": "Pengembangan aplikasi untuk ponsel Android dan iOS secara native maupun multiplatform.",
         "explanation_simple": (
             "Bayangkan merancang kendaraan khusus yang harus bisa bermanuver di jalan raya pegunungan terjal sekaligus menghemat bensin. "
             "Ponsel pintar di saku celanamu adalah komputer mini dengan sumber daya terbatas: baterai yang bisa habis, layar sentuh kecil, "
@@ -66,7 +66,7 @@ ECOSYSTEM_CURRICULUM_PART2 = {
     },
 
     "e-desktop-overview": {
-        "summary": "Arsitektur aplikasi komputer meja (Windows, macOS, Linux) dan pemanfaatan sumber daya sistem operasi penuh.",
+        "summary": "Pembuatan aplikasi untuk komputer desktop Windows, macOS, dan Linux.",
         "explanation_simple": (
             "Bayangkan perbedaan antara kapal pesiar samudera lepas dengan perahu kano sungai kecil. "
             "Aplikasi mobile mirip perahu kano: ramping, hemat tenaga, dan mudah bermanuver di ruang sempit. "
@@ -129,7 +129,7 @@ ECOSYSTEM_CURRICULUM_PART2 = {
     },
 
     "e-games-overview": {
-        "summary": "Arsitektur game loop, rendering pipeline real-time, fisika simulasi, dan game engines komersial.",
+        "summary": "Dunia pengembangan game, alur visual grafis, dan mesin pembuat game.",
         "explanation_simple": (
             "Bayangkan bioskop animasi hidup di mana penonton memegang kendali atas sang tokoh utama. "
             "Film kartun bioskop memutar 24 gambar diam per detik secara berurutan searah tanpa bisa diubah. "
@@ -196,7 +196,7 @@ ECOSYSTEM_CURRICULUM_PART2 = {
     },
 
     "e-embedded-overview": {
-        "summary": "Sistem komputasi tertanam, mikrokontroler, keterbatasan memori ekstrem, dan pemrograman perangkat keras langsung.",
+        "summary": "Memprogram perangkat keras kecil seperti mikrokontroler dan alat-alat IoT.",
         "explanation_simple": (
             "Bayangkan komputer yang tertanam di dalam mesin cuci otomatis, pengatur suhu AC kamar, atau alat pacu jantung medis. "
             "Perangkat ini tidak memiliki monitor kaca, tidak memiliki keyboard, dan tidak memiliki sistem operasi Windows dengan harddisk bergigabyte. "
@@ -260,7 +260,7 @@ ECOSYSTEM_CURRICULUM_PART2 = {
     },
 
     "e-graphics-overview": {
-        "summary": "Arsitektur komputasi grafis GPU, shader pipeline, grafika 2D/3D vektor, dan standar WebGPU/OpenGL.",
+        "summary": "Pengolahan gambar, animasi, dan visual 2D/3D lewat kartu grafis (GPU).",
         "explanation_simple": (
             "Bayangkan membandingkan seorang profesor matematika jenius dengan 1.000 anak sekolah dasar yang memegang sempoa. "
             "Profesor matematika (prosesor CPU) mampu memecahkan persamaan kalkulus dan logika filsafat yang sangat rumit secara mendalam, "
@@ -326,7 +326,7 @@ ECOSYSTEM_CURRICULUM_PART2 = {
     },
 
     "e-databases-overview": {
-        "summary": "Peta lanskap mesin database di industri, komparasi model relasional vs dokumen vs key-value vs graph.",
+        "summary": "Membandingkan berbagai jenis database: tabel relasional, dokumen, hingga grafik.",
         "explanation_simple": (
             "Bayangkan empat jenis tempat penyimpanan di sebuah kota modern: "
             "1. Kantor Catatan Sipil: menyimpan silsilah keluarga, akta nikah, dan nomor kependudukan dalam tabel kartu bertaut ketat (Relational SQL). "
@@ -389,7 +389,7 @@ ECOSYSTEM_CURRICULUM_PART2 = {
     },
 
     "e-api-communication-overview": {
-        "summary": "Protokol komunikasi antarlayanan: REST, GraphQL, gRPC, WebSockets, dan Webhooks.",
+        "summary": "Ragam cara menghubungkan layanan: REST, GraphQL, WebSocket, hingga gRPC.",
         "explanation_simple": (
             "Bayangkan cara-cara berkomunikasi dalam kehidupan sehari-hari: "
             "1. Mengirim surat pos tertulis (REST): kamu mengirim surat dan menunggu balasan surat beberapa hari kemudian. "
@@ -455,7 +455,7 @@ ECOSYSTEM_CURRICULUM_PART2 = {
     },
 
     "e-message-brokers-overview": {
-        "summary": "Arsitektur perantara pesan asinkron, antrean tugas terdistribusi, dan platform event streaming (RabbitMQ, Kafka).",
+        "summary": "Sistem pengantar pesan dan antrean tugas agar layanan tidak kewalahan.",
         "explanation_simple": (
             "Bayangkan antrean pemesanan tiket kereta api saat musim mudik lebaran. Jika hanya ada satu loket dan loket itu harus langsung "
             "mencetak tiket kertas, memeriksa KTP, dan memotong saldo bank untuk setiap orang saat itu juga, antrean fisik di stasiun akan mengular "
@@ -521,7 +521,7 @@ ECOSYSTEM_CURRICULUM_PART2 = {
     },
 
     "e-caching-overview": {
-        "summary": "Strategi penyimpanan sementara data frekuensi tinggi di memori berkecepatan tinggi untuk mereduksi latensi dan beban database.",
+        "summary": "Menyimpan data populer di memori kilat agar aplikasi merespons lebih cepat.",
         "explanation_simple": (
             "Bayangkan seorang pustakawan di perpustakaan kota besar. Jika setiap kali ada pengunjung yang meminjam buku terpopuler 'Kamus Bahasa Indonesia', "
             "sang pustakawan harus berjalan 50 meter ke lorong rak paling belakang lantai 3, naik tangga, mengambil kamus, lalu berjalan kembali ke meja depan, "
@@ -589,7 +589,7 @@ ECOSYSTEM_CURRICULUM_PART2 = {
     },
 
     "e-dsa-overview": {
-        "summary": "Peta struktur data dan algoritma industri (Trees, Graphs, Tries, Heaps) dan penerapan nyata di mesin pencari dan sistem rute.",
+        "summary": "Penerapan struktur data dan algoritma canggih di aplikasi industri nyata.",
         "explanation_simple": (
             "Bayangkan perbedaan antara mengantre di kasir toko kelontong biasa dengan sistem navigasi lalu lintas bandara internasional. "
             "Di toko kelontong, struktur antrean lurus biasa (Queue) sudah lebih dari cukup. "
@@ -656,7 +656,7 @@ ECOSYSTEM_CURRICULUM_PART2 = {
     },
 
     "e-paradigms-overview": {
-        "summary": "Peta paradigma pemrograman: Prosedural, Berorientasi Objek, Fungsional, Reaktif, dan Deklaratif di ekosistem industri.",
+        "summary": "Gaya berpikir dalam memprogram: berorientasi objek, fungsional, atau deklaratif.",
         "explanation_simple": (
             "Bayangkan cara-cara berbeda dalam melukis pemandangan alam: "
             "1. Pelukis Realis Tradisional (Imperatif / Prosedural): mencampur cat tetes demi tetes, menggores kuas dari pojok kiri atas ke kanan bawah mengikuti instruksi fisik langkah demi langkah yang presisi. "
@@ -723,7 +723,7 @@ ECOSYSTEM_CURRICULUM_PART2 = {
     },
 
     "e-system-programming-overview": {
-        "summary": "Rekayasa perangkat lunak tingkat rendah, kedekatan perangkat keras, kontrol memori manual, dan bahasa Rust/C/C++.",
+        "summary": "Pemrograman tingkat rendah yang dekat dengan perangkat keras menggunakan C, C++, atau Rust.",
         "explanation_simple": (
             "Bayangkan merancang mesin Formula 1 dibandingkan merancang mobil sedan keluarga otomatis. "
             "Mobil sedan keluarga (bahasa tingkat tinggi seperti Python/Dart) dilengkapi transmisi matic, pendingin kabin otomatis, "
@@ -788,7 +788,7 @@ ECOSYSTEM_CURRICULUM_PART2 = {
     },
 
     "e-computer-science-overview": {
-        "summary": "Peta lanskap disiplin sains komputer di industri: teori otomata, kriptografi modern, komputasi kuantum, dan AI fondasi.",
+        "summary": "Gambaran bidang ilmu komputer terapan: kriptografi, teori bahasa, hingga AI.",
         "explanation_simple": (
             "Bayangkan peta kepulauan nusantara yang sangat luas di ruang navigasi kapal. "
             "Ada pulau Logika Murni tempat Alan Turing pertama kali memetakan pulau komputasi matematika, "
@@ -854,7 +854,7 @@ ECOSYSTEM_CURRICULUM_PART2 = {
     },
 
     "e-architecture-overview": {
-        "summary": "Peta gaya arsitektur software industri: Monolith, Microservices, Event-Driven, Serverless, dan Hexagonal.",
+        "summary": "Pilihan bentuk arsitektur aplikasi: satu kesatuan utuh atau layanan terpisah-pisah.",
         "explanation_simple": (
             "Bayangkan merancang organisasi kapal perang angkatan laut. "
             "Gaya pertama adalah Kapal Induk Monolitik Raksasa: satu kapal induk mahabesar yang memuat landasan jet tempur, "
@@ -921,7 +921,7 @@ ECOSYSTEM_CURRICULUM_PART2 = {
     },
 
     "e-patterns-overview": {
-        "summary": "Pola arsitektur tingkat enterprise: CQRS, Event Sourcing, Circuit Breaker, BFF (Backend-for-Frontend), dan Saga.",
+        "summary": "Pola arsitektur tingkat lanjut untuk menangani sistem aplikasi skala besar.",
         "explanation_simple": (
             "Bayangkan sistem kelistrikan di gedung rumah sakit modern. Di panel listrik utama terpasang saklar otomatis (Circuit Breaker): "
             "jika terjadi korsleting arus pendek di ruang cuci lantai bawah, saklar otomatis langsung 'trip' memutus aliran listrik khusus ke ruang cuci tersebut "
@@ -987,7 +987,7 @@ ECOSYSTEM_CURRICULUM_PART2 = {
     },
 
     "e-distributed-overview": {
-        "summary": "Prinsip komputasi terdistribusi, konsistensi data terfragmentasi, partisi jaringan, dan Teorema CAP.",
+        "summary": "Tantangan membangun sistem yang tersebar di banyak server di berbagai tempat.",
         "explanation_simple": (
             "Bayangkan kamu memiliki tiga orang asisten pribadi yang bekerja di tiga kota berbeda: Jakarta, Surabaya, dan Medan. "
             "Masing-masing asisten memegang buku catatan yang mencatat sisa uang tabunganmu. "

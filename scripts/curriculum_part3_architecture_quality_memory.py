@@ -4,7 +4,7 @@ Includes Benchmark 3 (f-async).
 
 CURRICULUM_PART3 = {
     "f-design-patterns": {
-        "summary": "Pola solusi arsitektural teruji untuk memecahkan persoalan desain perangkat lunak yang berulang.",
+        "summary": "Pola solusi teruji untuk menyelesaikan masalah rancangan kode yang sering berulang.",
         "explanation_simple": (
             "Bayangkan seorang arsitek yang merancang gedung perkantoran modern. Arsitek tersebut tidak perlu menemukan kembali cara membuat "
             "tangga darurat, pintu geser otomatis, atau instalasi pipa air dari nol. Mereka menggunakan standar desain arsitektur yang sudah "
@@ -64,7 +64,7 @@ CURRICULUM_PART3 = {
     },
 
     "f-software-architecture": {
-        "summary": "Struktur fundamental tingkat tinggi perangkat lunak yang menetapkan batas modul dan aturan interaksi subsistem.",
+        "summary": "Rancangan kerangka besar aplikasi agar komponen-komponennya bekerja harmonis.",
         "explanation_simple": (
             "Bayangkan tata ruang kota metropolitan modern. Perencana kota memisahkan dengan tegas antara zona perumahan warga, "
             "zona industri pabrik pengolahan limbah, dan zona pusat perkantoran komersial. Pipa air bersih dan kabel listrik bawah tanah "
@@ -127,7 +127,7 @@ CURRICULUM_PART3 = {
     },
 
     "f-error-handling": {
-        "summary": "Strategi antisipasi, penangkapan, dan pemulihan kondisi abnormal selama eksekusi program.",
+        "summary": "Menyiapkan antisipasi agar aplikasi tidak langsung mati saat terjadi gangguan.",
         "explanation_simple": (
             "Bayangkan pertunjukan akrobatik sirkus di udara. Meskipun para pemain akrobat sudah berlatih ribuan kali, "
             "pengelola sirkus selalu memasang jaring pengaman lentur di bawah ayunan tali. Jika seorang pemain terpeleset dari tali, "
@@ -192,7 +192,7 @@ CURRICULUM_PART3 = {
     },
 
     "f-debugging": {
-        "summary": "Metodologi ilmiah dan teknik forensik untuk mengidentifikasi, mereproduksi, dan memperbaiki cacat logika pada perangkat lunak.",
+        "summary": "Cara melacak, menemukan, dan memperbaiki kesalahan logika di dalam kode.",
         "explanation_simple": (
             "Bayangkan seorang detektif forensik yang sedang menyelidiki tempat kejadian perkara. "
             "Detektif yang berpengalaman tidak menebak-nebak secara acak atau menuduh sembarang orang berdasarkan firasat semata. "
@@ -256,7 +256,7 @@ CURRICULUM_PART3 = {
     },
 
     "f-testing": {
-        "summary": "Verifikasi otomatis kebenaran fungsional dan ketahanan kode melalui hierarki pengujian bertingkat.",
+        "summary": "Memeriksa kebenaran kode secara otomatis agar fitur tidak mudah rusak.",
         "explanation_simple": (
             "Bayangkan pabrik perakitan mobil uji tabrak. Sebelum mobil diizinkan meluncur di jalan raya bersama pengemudi nyata, "
             "setiap komponen diuji bertahap: bilah rem diuji tekanannya di mesin lab mekanik (Unit Test), "
@@ -321,7 +321,7 @@ CURRICULUM_PART3 = {
     },
 
     "f-memory": {
-        "summary": "Model pengorganisasian memori virtual, siklus hidup alokasi stack dan heap, serta manajemen sampah memori.",
+        "summary": "Memahami bagaimana program meminjam, memakai, dan mengembalikan memori komputer.",
         "explanation_simple": (
             "Bayangkan sebuah meja kerja di bengkel kayu. Di atas meja kerja yang dekat dengan tanganmu (Call Stack), "
             "kamu meletakkan alat-alat kecil yang sedang kamu pakai sekarang (obeng, penggaris). Begitu pekerjaan selesai, "
@@ -386,7 +386,7 @@ CURRICULUM_PART3 = {
     },
 
     "f-concurrency": {
-        "summary": "Menjalankan beberapa jalur eksekusi tugas yang tumpang tindih dalam satuan waktu melalui threads, processes, atau coroutines.",
+        "summary": "Menjalankan beberapa tugas sekaligus agar aplikasi tetap lincah dan tidak macet.",
         "explanation_simple": (
             "Bayangkan dapur restoran yang sibuk. Jika hanya ada satu koki dan dapur hanya bisa mengerjakan satu hal sekali waktu, "
             "koki harus berdiri diam selama 20 menit menatap oven roti yang sedang memanggang sebelum boleh mulai memotong sayuran sup. "
@@ -447,7 +447,7 @@ CURRICULUM_PART3 = {
     },
 
     "f-async": {
-        "summary": "Mengelola tugas tertunda seperti operasi I/O dan koordinasi asinkron tanpa memblokir thread eksekusi utama.",
+        "summary": "Menjalankan proses yang butuh waktu tanpa membuat tampilan aplikasi membeku.",
         "explanation_simple": (
             "Bayangkan memesan makanan cepat saji di kasir restoran modern. Setelah kamu memesan dan membayar burger, "
             "kasir tidak menyuruhmu berdiri diam mematung di depan meja kasir selama 15 menit menunggu burger dimasak. "

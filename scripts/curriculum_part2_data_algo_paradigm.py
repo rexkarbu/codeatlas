@@ -3,7 +3,7 @@
 
 CURRICULUM_PART2 = {
     "f-data-structures": {
-        "summary": "Format pengorganisasian, penyimpanan, dan pengelolaan data di memori untuk komputasi efisien.",
+        "summary": "Cara menata dan menyimpan data agar mudah dicari dan diolah.",
         "explanation_simple": (
             "Bayangkan lemari arsip di kantor pengacara. Jika dokumen disusun bertumpuk acak di satu kotak kardus, "
             "kamu harus membongkar seluruh kardus selama berjam-jam hanya untuk mencari akta kelahiran seorang klien. "
@@ -65,7 +65,7 @@ CURRICULUM_PART2 = {
     },
 
     "f-arrays-lists": {
-        "summary": "Koleksi data terurut dengan alokasi memori bersebelahan dan akses cepat berbasis indeks numerik.",
+        "summary": "Koleksi data terurut yang mudah diakses lewat nomor urut atau indeks.",
         "explanation_simple": (
             "Bayangkan deretan loker bernomor urut 0, 1, 2, 3 di lobi stasiun kereta. Setiap loker memiliki ukuran yang sama persis "
             "dan berjejer berdampingan di dinding yang sama. Jika petugas stasiun memintamu membuka loker nomor 2, "
@@ -127,7 +127,7 @@ CURRICULUM_PART2 = {
     },
 
     "f-references": {
-        "summary": "Mekanisme pengacuan data di memori melalui pointer dan alias objek.",
+        "summary": "Melihat bagaimana variabel merujuk atau menunjuk ke data yang sama di memori.",
         "explanation_simple": (
             "Bayangkan kamu membagikan tautan (link) Google Docs dokumen proposal kepada tiga rekan kerjamu. "
             "Kamu tidak mencetak tiga bundel kertas fisik untuk masing-masing orang, melainkan membagikan alamat URL yang sama. "
@@ -191,7 +191,7 @@ CURRICULUM_PART2 = {
     },
 
     "f-algorithms": {
-        "summary": "Rangkaian langkah logis terdefinisi dengan baik untuk menyelesaikan masalah komputasi secara terukur.",
+        "summary": "Langkah teratur untuk menyelesaikan masalah komputasi secara efisien.",
         "explanation_simple": (
             "Bayangkan kamu tersesat di labirin taman bermain dan ingin menemukan jalan keluar tercepat. "
             "Strategi acak berlari ke segala arah bisa memakan waktu berjam-jam tanpa hasil pasti. "
@@ -252,7 +252,7 @@ CURRICULUM_PART2 = {
     },
 
     "f-big-o": {
-        "summary": "Notasi matematis untuk mengukur skalabilitas efisiensi waktu dan konsumsi memori saat ukuran data membesar.",
+        "summary": "Cara mengukur seberapa cepat dan hemat memori kode saat data bertambah banyak.",
         "explanation_simple": (
             "Bayangkan kamu ingin mengantarkan berkas dokumen ke temanmu. Jika temanmu duduk di meja sebelah, berjalan kaki memakan waktu 10 detik. "
             "Jika temanmu berada di kota lain, terbang naik pesawat memakan waktu 4 jam. "
@@ -317,7 +317,7 @@ CURRICULUM_PART2 = {
     },
 
     "f-oop": {
-        "summary": "Paradigma pemodelan perangkat lunak berbasis objek yang menggabungkan state data dan perilaku method.",
+        "summary": "Menata kode dengan menggabungkan data dan fungsinya ke dalam bentuk objek.",
         "explanation_simple": (
             "Bayangkan pabrik perakitan mobil. Sebelum memproduksi ribuan mobil, insinyur merancang blueprint cetak biru bernama 'Mobil'. "
             "Cetakan ini menentukan bahwa setiap mobil memiliki atribut warna, kapasitas bensin, dan kecepatan, serta kemampuan (method) "
@@ -379,7 +379,7 @@ CURRICULUM_PART2 = {
     },
 
     "f-functional-programming": {
-        "summary": "Paradigma komputasi yang memperlakukan evaluasi program sebagai fungsi matematika murni tanpa mutasi state.",
+        "summary": "Menulis program dengan fungsi murni tanpa mengubah data secara langsung.",
         "explanation_simple": (
             "Bayangkan pabrik pengolahan air minum kemasan otomatis. Air mentah dari mata air mengalir melalui pipa filter karbon, "
             "lalu ke tabung sinar ultraviolet, dan berakhir di botol kemasan bersih. "
@@ -440,7 +440,7 @@ CURRICULUM_PART2 = {
     },
 
     "f-clean-code": {
-        "summary": "Praktek penulisan kode yang memprioritaskan keterbacaan manusia, kesederhanaan struktur, dan kemudahan pemeliharaan.",
+        "summary": "Kebiasaan menulis kode yang rapi, mudah dibaca, dan gampang dirawat.",
         "explanation_simple": (
             "Bayangkan membaca buku teks yang dicetak rapi dengan daftar isi jelas, bab berurutan, paragraf ringkas, "
             "dan tanda baca yang benar, dibandingkan membaca tumpukan catatan kusut yang penuh coretan singkatan aneh tanpa spasi. "

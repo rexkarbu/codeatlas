@@ -45,22 +45,22 @@ void main() {
   testWidgets(
     'Offline persistence: seed, save progress, upgrade, and verify data retention',
     (tester) async {
-      // 1. Load bundled asset (which is version 4)
+      // 1. Load bundled asset (which is version 5)
       final jsonStr = await rootBundle.loadString(
         'assets/content/content.json',
       );
       final data = jsonDecode(jsonStr) as Map<String, dynamic>;
 
-      // Initial seed with version 3 content package
-      final v3Data = Map<String, dynamic>.from(data);
-      v3Data['content_version'] = 3;
+      // Initial seed with version 4 content package
+      final v4Data = Map<String, dynamic>.from(data);
+      v4Data['content_version'] = 4;
 
-      final result1 = await seedLoader.seedFromMap(v3Data);
+      final result1 = await seedLoader.seedFromMap(v4Data);
       expect(result1.success, isTrue);
       expect(result1.topicsCount, equals(99));
 
-      // 1b. Repeated seed with identical version 3 is idempotent (0 writes)
-      final resultRepeat = await seedLoader.seedFromMap(v3Data);
+      // 1b. Repeated seed with identical version 4 is idempotent (0 writes)
+      final resultRepeat = await seedLoader.seedFromMap(v4Data);
       expect(resultRepeat.success, isTrue);
       expect(
         resultRepeat.topicsCount,
@@ -68,7 +68,7 @@ void main() {
         reason: 'Identical version should not rewrite topics',
       );
 
-      // 2. User sets status and writes notes in version 3
+      // 2. User sets status and writes notes in version 4
       await learningRepo.updateStatus(
         'f-programming-logic',
         LearningStatus.understood,
@@ -91,12 +91,12 @@ void main() {
       expect(progBefore?.status, equals(LearningStatus.understood));
       expect(progBefore?.notes, equals('Catatan penting urutan instruksi.'));
 
-      // 3. Real content upgrade from version 3 to version 4
+      // 3. Real content upgrade from version 4 to version 5
       final result2 = await seedLoader.seedFromMap(data);
       expect(result2.success, isTrue);
       expect(result2.topicsCount, equals(99));
 
-      // 4. Verify user data is 100% retained after v3 -> v4 upgrade
+      // 4. Verify user data is 100% retained after v4 -> v5 upgrade
       final progAfter = await learningRepo.getProgress('f-programming-logic');
       expect(
         progAfter?.status,
@@ -132,9 +132,9 @@ void main() {
       final reloadedPaths = await learningRepo.getAllPaths();
       expect(reloadedPaths.any((p) => p.name == 'Jalur Kustom Saya'), isTrue);
 
-      // 5. Downgrade attempt (version 3 < version 4) must be rejected
+      // 5. Downgrade attempt (version 4 < version 5) must be rejected
       final downgradeData = Map<String, dynamic>.from(data);
-      downgradeData['content_version'] = 3;
+      downgradeData['content_version'] = 4;
       final resultDowngrade = await seedLoader.seedFromMap(downgradeData);
       expect(
         resultDowngrade.success,
@@ -145,7 +145,7 @@ void main() {
 
       // 6. Corrupted package is safely rejected and rolled back
       final corruptedData = Map<String, dynamic>.from(data);
-      corruptedData['content_version'] = 5;
+      corruptedData['content_version'] = 6;
       // Introduce broken prerequisite reference
       final corruptedTopics = List<dynamic>.from(
         corruptedData['topics'] as List,
@@ -199,12 +199,12 @@ void main() {
         reason: 'Kategori sementara wajib di-rollback penuh saat terjadi kegagalan di tengah penulisan',
       );
 
-      // Meta content_version remains at 4
+      // Meta content_version remains at 5
       final meta = await contentRepo.getContentMeta();
       expect(
         meta!.contentVersion,
-        equals(4),
-        reason: 'Failed upgrade must rollback and preserve valid version 4',
+        equals(5),
+        reason: 'Failed upgrade must rollback and preserve valid version 5',
       );
 
       // 7. Verify all user data remains intact after rejection and rollback

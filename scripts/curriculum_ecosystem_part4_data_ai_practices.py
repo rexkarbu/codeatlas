@@ -3,7 +3,7 @@
 
 ECOSYSTEM_CURRICULUM_PART4 = {
     "e-data-engineering-overview": {
-        "summary": "Ekosistem rekayasa data: ETL vs ELT, data warehouse vs lakehouse, pemrosesan batch & stream, dan orchestrator data.",
+        "summary": "Membangun pipa aliran data dari berbagai sumber ke gudang data yang siap dianalisis.",
         "explanation_simple": (
             "Bayangkan sebuah bendungan air raksasa yang menampung aliran air dari ratusan sungai berlumpur yang berbeda-beda. "
             "Air lumpur mentah tersebut tidak bisa langsung dialirkan ke keran air minum di rumah-rumah warga. "
@@ -69,7 +69,7 @@ ECOSYSTEM_CURRICULUM_PART4 = {
         ],
     },
     "e-data-science-overview": {
-        "summary": "Ekosistem data science: Analisis data eksploratif (EDA), statistik terapan, feature engineering, Pandas, NumPy, dan visualisasi.",
+        "summary": "Menggali pola dan wawasan berharga dari tumpukan data menggunakan statistik dan kode.",
         "explanation_simple": (
             "Bayangkan kamu adalah seorang penambang emas yang menyaring berton-ton pasir di tepi sungai. "
             "Sebagian besar dari apa yang kamu kumpulkan adalah lumpur keruh, batu kerikil tak berharga, dan sampah plastik. "
@@ -134,7 +134,7 @@ ECOSYSTEM_CURRICULUM_PART4 = {
         ],
     },
     "e-ai-ml-overview": {
-        "summary": "Ekosistem AI & Machine Learning: Supervised learning, neural networks, LLM, embeddings, RAG, dan evaluasi model.",
+        "summary": "Dasar kecerdasan buatan, model bahasa besar (LLM), dan cara memanfaatkannya di aplikasi.",
         "explanation_simple": (
             "Bayangkan mengajarkan seorang anak kecil mengenali seekor kucing. "
             "Dalam pemrograman tradisional, kamu harus menulis ribuan baris aturan kaku: 'jika memiliki 4 kaki, 2 telinga segitiga, kumis sepanjang 5 cm, dan berbulu, maka kucing'. "
@@ -201,7 +201,7 @@ ECOSYSTEM_CURRICULUM_PART4 = {
         ],
     },
     "e-version-control-overview": {
-        "summary": "Ekosistem sistem kendali versi: Git internals, DAG, commit, branching strategy (Trunk-based vs GitFlow), dan rebase vs merge.",
+        "summary": "Strategi percabangan Git dan kerja sama tim dalam mengelola versi aplikasi.",
         "explanation_simple": (
             "Bayangkan kamu sedang menulis sebuah novel fiksi setebal 800 halaman bersama tiga penulis rekananmu. "
             "Metode amatir adalah menyimpan berkas dengan nama: `novel_final.docx`, `novel_final_bgt.docx`, `novel_final_revisi_bos_edit2.docx`. "
@@ -269,7 +269,7 @@ ECOSYSTEM_CURRICULUM_PART4 = {
         ],
     },
     "e-engineering-process-overview": {
-        "summary": "Ekosistem proses rekayasa software: Agile/Scrum, Kanban, RFC/Design Docs, code review, dan manajemen utang teknis.",
+        "summary": "Alur kerja tim rekayasa software: perencanaan tugas, review kode, dan perbaikan berkala.",
         "explanation_simple": (
             "Bayangkan sekelompok pembangun yang ingin mendirikan jembatan gantung panjang di atas ngarai curam. "
             "Jika setiap tukang langsung membawa semen dan mencor tiang di sembarang tempat tanpa gambar arsitektur yang disepakati, "
@@ -336,7 +336,7 @@ ECOSYSTEM_CURRICULUM_PART4 = {
         ],
     },
     "e-ui-ux-overview": {
-        "summary": "Ekosistem UI/UX untuk developer: Desain sistem, prinsip Nielsen Norman, hierarki visual, hukum Jakob, dan micro-interactions.",
+        "summary": "Prinsip kenyamanan tampilan dan kemudahan penggunaan aplikasi bagi pengguna awam.",
         "explanation_simple": (
             "Bayangkan mengendarai mobil sewaan di luar negeri di mana pedal gas ditaruh di setir tangan, tuas rem ada di pintu kiri, "
             "dan indikator kecepatan ditulis dalam angka Romawi terbalik dengan lampu hijau yang menyala hanya saat mesin hampir meledak. "
@@ -403,7 +403,7 @@ ECOSYSTEM_CURRICULUM_PART4 = {
         ],
     },
     "e-technical-docs-overview": {
-        "summary": "Ekosistem dokumentasi teknis & API: Docs-as-Code, OpenAPI/Swagger, Markdown, Docusaurus, dan desain kontrak API.",
+        "summary": "Menulis dokumentasi teknis dan panduan API yang jelas bagi developer lain.",
         "explanation_simple": (
             "Bayangkan kamu membeli seperangkat perabot lemari pakaian kayu impor yang sangat rumit dengan 500 papan kayu, 200 sekrup aneh, dan 50 engsel magnetik. "
             "Namun di dalam kardusnya tidak ada selembar pun buku petunjuk perakitan, melainkan hanya secarik kertas kusut bertuliskan: 'Cari tahu sendiri cara memasangnya!'. "
@@ -469,7 +469,7 @@ ECOSYSTEM_CURRICULUM_PART4 = {
         ],
     },
     "e-localization-overview": {
-        "summary": "Ekosistem internasionalisasi & lokalisasi: i18n vs l10n, format ICU, aturan jamak, penanganan zona waktu, dan dukungan RTL.",
+        "summary": "Menyiapkan aplikasi agar mudah diterjemahkan ke berbagai bahasa dan budaya dunia.",
         "explanation_simple": (
             "Bayangkan kamu menerjemahkan sebuah buku resep masakan dari bahasa Inggris ke bahasa Arab. "
             "Jika kamu hanya menggunakan kamus kata per kata dan mencetaknya di kertas biasa, pembaca di Timur Tengah akan kebingungan: "
@@ -534,7 +534,7 @@ ECOSYSTEM_CURRICULUM_PART4 = {
         ],
     },
     "e-blockchain-overview": {
-        "summary": "Ekosistem blockchain & Web3: Distributed ledger, konsensus (PoW vs PoS), smart contracts, EVM, dan gas fees.",
+        "summary": "Dasar buku besar terdesentralisasi, kontrak pintar, dan ekosistem Web3.",
         "explanation_simple": (
             "Bayangkan sebuah kelompok arisan beranggotakan 50 orang di sebuah desa. "
             "Metode lama mengandalkan satu bendahara desa yang memegang satu buku kas tunggal. "
@@ -600,7 +600,7 @@ ECOSYSTEM_CURRICULUM_PART4 = {
         ],
     },
     "e-open-source-overview": {
-        "summary": "Ekosistem open-source & lisensi software: Lisensi permisif vs copyleft (MIT, Apache, GPL), etika kontribusi, dan tata kelola komunitas.",
+        "summary": "Aturan lisensi kode terbuka dan cara berkontribusi di komunitas perangkat lunak.",
         "explanation_simple": (
             "Bayangkan seorang koki jenius yang menciptakan resep saus pasta terlezat di dunia. "
             "Ia menulis resep rahasia tersebut di selembar kertas dan menempelkannya di papan pengumuman alun-alun kota dengan pesan: "

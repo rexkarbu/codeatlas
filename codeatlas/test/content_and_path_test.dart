@@ -27,7 +27,7 @@ void main() {
 
     test('Metadata adheres to production specifications', () {
       expect(pkg.formatVersion, equals(1));
-      expect(pkg.contentVersion, equals(4));
+      expect(pkg.contentVersion, equals(5));
       expect(pkg.dataset, equals('production'));
       expect(pkg.locale, equals('id-ID'));
     });

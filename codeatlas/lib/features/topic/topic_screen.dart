@@ -333,18 +333,12 @@ class _TopicScreenState extends State<TopicScreen> {
           title: Text(topic.title),
           actions: [
             IconButton(
-              key: const ValueKey('toc_action_button'),
+              key: const ValueKey('toc_button'),
               icon: const Icon(Icons.list_alt),
               tooltip: 'Daftar Isi',
               onPressed: _showTableOfContents,
             ),
           ],
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          key: const ValueKey('toc_button'),
-          onPressed: _showTableOfContents,
-          icon: const Icon(Icons.list_alt),
-          label: const Text('Daftar Isi'),
         ),
         body: SingleChildScrollView(
           key: const ValueKey('topic_scrollable'),
@@ -375,7 +369,10 @@ class _TopicScreenState extends State<TopicScreen> {
               const SizedBox(height: 8),
               Text(
                 topic.explanationSimple,
-                style: theme.textTheme.bodyMedium?.copyWith(height: 1.6),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  height: 1.6,
+                  fontWeight: FontWeight.normal,
+                ),
               ),
               const SizedBox(height: 24),
 
@@ -389,7 +386,10 @@ class _TopicScreenState extends State<TopicScreen> {
                 const SizedBox(height: 8),
                 Text(
                   topic.problemContext,
-                  style: theme.textTheme.bodyMedium?.copyWith(height: 1.6),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    height: 1.6,
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
                 const SizedBox(height: 24),
               ],
@@ -403,7 +403,10 @@ class _TopicScreenState extends State<TopicScreen> {
               const SizedBox(height: 8),
               Text(
                 topic.explanationTechnical,
-                style: theme.textTheme.bodyMedium?.copyWith(height: 1.6),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  height: 1.6,
+                  fontWeight: FontWeight.normal,
+                ),
               ),
               const SizedBox(height: 24),
 
@@ -432,18 +435,50 @@ class _TopicScreenState extends State<TopicScreen> {
                     const SizedBox(height: 6),
                     Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.surfaceContainerHighest
                             .withValues(alpha: 0.5),
                         borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        example.explanation,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                          height: 1.5,
+                        border: Border(
+                          left: BorderSide(
+                            color: theme.colorScheme.primary,
+                            width: 3,
+                          ),
                         ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.directions_walk,
+                                size: 16,
+                                color: theme.colorScheme.primary,
+                              ),
+                              const SizedBox(width: 6),
+                              Expanded(
+                                child: Text(
+                                  'Penjelasan Alur:',
+                                  style: theme.textTheme.labelMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: theme.colorScheme.primary,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            example.explanation,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                              height: 1.5,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -569,7 +604,10 @@ class _TopicScreenState extends State<TopicScreen> {
                 const SizedBox(height: 8),
                 Text(
                   topic.whenToUse,
-                  style: theme.textTheme.bodyMedium?.copyWith(height: 1.6),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    height: 1.6,
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
                 const SizedBox(height: 24),
               ],
@@ -594,7 +632,10 @@ class _TopicScreenState extends State<TopicScreen> {
                 ),
                 child: Text(
                   topic.whyVibecodingMatters,
-                  style: theme.textTheme.bodyMedium?.copyWith(height: 1.6),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    height: 1.6,
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
@@ -803,7 +844,7 @@ class _TopicScreenState extends State<TopicScreen> {
                   ],
                 ),
               ],
-              const SizedBox(height: 80), // extra padding for FAB
+              const SizedBox(height: 24),
             ],
           ),
         ),

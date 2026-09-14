@@ -36,26 +36,26 @@ void main() {
       expect(actionMajor, equals(VersionAction.upgradeHigher));
     });
 
-    test('Real Migration: Version 3 in DB to Version 4 in package triggers upgradeHigher', () {
-      final action3to4 = SeedLoader.determineVersionAction(4, 3);
-      expect(action3to4, equals(VersionAction.upgradeHigher));
+    test('Real Migration: Version 4 in DB to Version 5 in package triggers upgradeHigher', () {
+      final action4to5 = SeedLoader.determineVersionAction(5, 4);
+      expect(action4to5, equals(VersionAction.upgradeHigher));
     });
 
-    test('Real Downgrade Rejection: Version 4 in DB to Version 3 in package is strictly rejected', () {
-      final action4to3 = SeedLoader.determineVersionAction(3, 4);
-      expect(action4to3, equals(VersionAction.rejectDowngrade));
-    });
-
-    test('Hypothetical Downgrade Rejection: Version 5 in DB to Version 4 in package is strictly rejected', () {
+    test('Real Downgrade Rejection: Version 5 in DB to Version 4 in package is strictly rejected', () {
       final action5to4 = SeedLoader.determineVersionAction(4, 5);
       expect(action5to4, equals(VersionAction.rejectDowngrade));
+    });
+
+    test('Hypothetical Downgrade Rejection: Version 6 in DB to Version 5 in package is strictly rejected', () {
+      final action6to5 = SeedLoader.determineVersionAction(5, 6);
+      expect(action6to5, equals(VersionAction.rejectDowngrade));
     });
 
     test('Validation failure before transaction: malformed package throws FormatException', () {
       expect(
         () => SeedLoader.parseAndValidate({
           'format_version': 999, // unsupported
-          'content_version': 4,
+          'content_version': 5,
           'dataset': 'production',
           'locale': 'id-ID',
           'categories': [],

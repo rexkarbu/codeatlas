@@ -4,71 +4,88 @@ Includes Benchmark 1 (f-variables-data-types) and Benchmark 2 (f-functions).
 
 CURRICULUM_PART1 = {
     "f-programming-logic": {
-        "summary": "Menyusun langkah instruksi terurut yang dapat dieksekusi secara deterministik oleh komputer.",
+        "summary": "Menyusun instruksi dengan urutan yang masuk akal.",
         "explanation_simple": (
-            "Bayangkan kamu sedang menuliskan resep membuat secangkir kopi untuk seseorang yang belum pernah ke dapur. "
-            "Instruksi 'tuang air panas, masukkan kopi bubuk, aduk' akan menghasilkan kopi yang berbeda jika urutannya dibalik "
-            "menjadi 'aduk cangkir kosong, tuang air panas, buang ampas'. Komputer bekerja persis seperti asisten dapur tersebut: "
-            "ia tidak memiliki inisiatif atau akal sehat untuk menebak maksud tersembunyi pembuatnya, melainkan menjalankan setiap "
-            "langkah secara harfiah sesuai urutan yang tertulis.\n\n"
-            "Logika pemrograman menghubungkan pemikiran analitis manusia dengan perilaku perangkat keras komputer. "
-            "Analogi resep ini memiliki batas: manusia bisa berhenti saat mencium bau gosong, sedangkan program komputer akan terus "
-            "menjalankan instruksi hingga selesai atau mengalami crash jika kondisi batas tidak diantisipasi sejak awal dalam kode."
+            "Bayangkan kamu meminta seseorang yang baru pertama kali ke dapur untuk membuat mie instan. "
+            "Jika kamu memberi instruksi: 'Rebus mie 3 menit, tuang mie ke mangkuk, buka bungkus mie', "
+            "ia akan bingung atau bahkan merebus mie beserta plastik pembungkusnya. "
+            "Urutan yang benar dan masuk akal adalah: buka bungkus mie, rebus mie dalam air mendidih, lalu tuang ke mangkuk bersama bumbu.\n\n"
+            "Komputer bekerja persis seperti asisten dapur tersebut: sangat patuh, bekerja secepat kilat, tetapi tidak punya inisiatif "
+            "atau akal sehat untuk menebak apa maksud kita. Komputer hanya menjalankan setiap instruksi secara harfiah, baris demi baris, "
+            "sesuai urutan yang kita tuliskan. Jika urutannya terbalik, komputer tidak akan membetulkannya sendiri. "
+            "Logika pemrograman adalah cara kita menyusun urutan langkah yang masuk akal agar komputer menyelesaikan tugas persis seperti yang kita harapkan."
         ),
         "problem_context": (
-            "Di masa awal perancangan perangkat elektronik, sirkuit kabel fisik harus dipindahkan secara manual untuk mengubah "
-            "perhitungan matematika. Ketika arsitektur stored-program diperkenalkan oleh von Neumann, timbul masalah besar: "
-            "bagaimana cara manusia merumuskan instruksi yang kompleks agar jutaan operasi logika dapat dijalankan tanpa kekacauan urutan? "
-            "Tanpa logika pemrograman yang terstruktur, instruksi beruntun akan saling menimpa hasil perhitungan register prosesor, "
-            "mengakibatkan data hilang dan hasil yang tidak dapat diprediksi."
+            "Masalah terbesar bagi pemula dan orang yang sering meminta AI membuatkan kode (vibecoding) adalah berasumsi bahwa "
+            "komputer paham tujuan akhir aplikasi secara ajaib. Padahal, komputer hanya membaca kode dari atas ke bawah.\n\n"
+            "Sebagai contoh, bayangkan alur pembayaran di toko online:\n"
+            "- Urutan yang salah: Program menghitung potongan harga sebelum pembeli memasukkan kode promo. "
+            "Karena kode promo belum dibaca, potongan harga tetap nol dan pembeli membayar harga penuh.\n"
+            "- Urutan yang benar: Program menerima kode promo terlebih dahulu, memeriksa apakah promo valid, menghitung potongan harga, "
+            "lalu menampilkan total akhir yang harus dibayar.\n\n"
+            "Di kedua skenario di atas, komputer tidak menampilkan pesan kesalahan apa pun karena instruksinya sah. "
+            "Namun di skenario pertama, hasil bisnisnya salah total. Logika pemrograman memastikan setiap bahan atau data "
+            "sudah siap sebelum digunakan oleh langkah berikutnya."
         ),
         "explanation_technical": (
-            "Logika pemrograman bertumpu pada tiga konstruksi fundamental: sequence (eksekusi baris berurutan), "
-            "selection (percabangan berbasis nilai boolean), dan iteration (pengulangan berbasis kondisi terminasi). "
-            "Instruksi dieksekusi oleh Program Counter (PC) di dalam CPU yang menunjuk ke alamat memori instruksi berikutnya secara sekuensial, "
-            "kecuali ada instruksi jump atau branch yang mengubah nilai PC tersebut.\n\n"
-            "Algoritma adalah prosedur komputasional bertahap yang menerima masukan dan menghasilkan keluaran dalam waktu berhingga. "
-            "Sintaks adalah aturan formal tata bahasa pemrograman tertentu (seperti titik koma atau tanda kurung kurawal). "
-            "Sebuah kode program dapat valid secara sintaksis dan berhasil dikompilasi, tetapi mengalami logical error (kesalahan logika) "
-            "jika relasi sebab-akibat antar-instruksi tidak memenuhi post-condition yang diharapkan."
+            "Untuk membangun alur program yang benar, ada tiga fondasi logika utama yang selalu digunakan di semua bahasa pemrograman:\n\n"
+            "1. Sekuensial (Sequence / Berurutan):\n"
+            "Instruksi dijalankan baris demi baris dari atas ke bawah. Langkah kedua baru berjalan setelah langkah pertama tuntas. "
+            "Misalnya: mengambil data pengguna, baru kemudian menyapa namanya.\n\n"
+            "2. Percabangan (Selection / Branching):\n"
+            "Program mengambil keputusan untuk memilih jalur instruksi yang berbeda berdasarkan kondisi benar (true) atau salah (false). "
+            "Misalnya: jika saldo mencukupi, potong saldo dan kirim barang; jika saldo tidak cukup, tampilkan peringatan 'Saldo Kurang'.\n\n"
+            "3. Perulangan (Iteration / Looping):\n"
+            "Program mengulang sekumpulan instruksi berkali-kali selama kondisi tertentu masih terpenuhi. "
+            "Misalnya: mengirim notifikasi ke 100 pengguna satu per satu sampai daftar penerima habis.\n\n"
+            "Teknik Menelusuri Kode (Step Tracing):\n"
+            "Tracing adalah kebiasaan membaca kode baris demi baris seperti komputer, sambil mencatat nilai variabel pada secarik kertas "
+            "atau di kepala kita pada setiap langkah. Tracing melatih kita melihat apa yang sebenarnya terjadi di setiap baris, bukan apa yang kita bayangkan terjadi.\n\n"
+            "Membedakan Dua Jenis Kesalahan:\n"
+            "- Syntax Error (Kesalahan Tata Bahasa): Terjadi saat aturan penulisan bahasa dilanggar (misalnya lupa tanda kurung atau salah ketik kata kunci). "
+            "Komputer langsung menolak menjalankan program dan memberi tahu letak baris yang rusak. Ini mudah ditemukan.\n"
+            "- Logical Error (Kesalahan Logika): Program ditulis rapi, tidak ada salah ketik, dan berjalan lancar tanpa pesan error, "
+            "tetapi hasilnya salah (misalnya rumus diskon yang terbalik atau salah langkah). Kesalahan logika lebih menantang "
+            "karena hanya bisa ditemukan dengan menelusuri alur berpikir dalam kode."
         ),
         "misconceptions": [
             {
-                "misconception": "Komputer memahami konteks dan niat programmer saat kode dijalankan.",
-                "explanation": "Komputer hanya mengeksekusi urutan bit biner instruksi mesin tanpa pemahaman semantik atau konteks dunia nyata.",
-                "spot_in_code": "Mengharapkan urutan eksekusi otomatis menyesuaikan sendiri padahal instruksi ditulis terbalik."
+                "misconception": "Jika program berjalan lancar tanpa pesan error, berarti kode sudah pasti benar.",
+                "explanation": "Komputer hanya memeriksa apakah tata bahasa (sintaks) kode sah. Komputer tidak tahu apakah hasil perhitungan atau urutan instruksi sudah sesuai dengan kebutuhan logika yang kamu inginkan.",
+                "spot_in_code": "Rumus total = harga * diskon bukannya total = harga - (harga * diskon). Kode berjalan tanpa crash, tetapi nominal belanja menjadi salah total."
             },
             {
-                "misconception": "Jika kode berhasil berjalan tanpa pesan error, maka logikanya pasti benar.",
-                "explanation": "Kode yang bebas syntax error dan runtime exception tetap bisa menghasilkan perhitungan data yang salah fatal.",
-                "spot_in_code": "Rumus diskon total_harga = harga * diskon bukannya total_harga = harga - (harga * diskon)."
+                "misconception": "Komputer bisa menebak niat kita dan otomatis melompati langkah yang terlewat.",
+                "explanation": "Komputer mengeksekusi instruksi secara kaku dan harfiah. Komputer tidak memiliki intuisi atau akal sehat untuk membetulkan urutan yang keliru.",
+                "spot_in_code": "Mencetak isi variabel keranjang belanja sebelum data barang selesai diambil dari server."
             }
         ],
         "when_to_use": (
-            "Terapkan pemikiran logika sekuensial dan formalisasi algoritma pada setiap modul software sebelum menulis sintaks. "
-            "Gunakan diagram alir (flowchart) atau pseudocode saat memecah masalah bisnis yang memiliki banyak dependensi urutan. "
-            "Hindari membuat alur logika yang terlalu panjang dalam satu blok tanpa pembagian tugas modular."
+            "Gunakan pemikiran logika terstruktur setiap kali merancang alur fitur baru sebelum mulai menulis kode. "
+            "Uraikan masalah besar menjadi urutan langkah kecil: apa yang harus terjadi pertama kali, kondisi apa yang perlu dicek, "
+            "dan bagian mana yang perlu diulang. Terapkan teknik tracing langkah demi langkah setiap kali menemukan bug di mana program berjalan "
+            "tanpa pesan error tetapi hasilnya meleset dari harapan."
         ),
         "why_vibecoding_matters": (
-            "Saat vibecoding dengan asisten AI, model sering menghasilkan kode yang terlihat meyakinkan tetapi memiliki kekeliruan urutan operasi "
-            "(misalnya mengosongkan token otentikasi sebelum permintaan HTTP selesai dikirim). Pahami alur logika agar kamu bisa meneliti "
-            "urutan kejadian yang dihasilkan AI. Ajukan pertanyaan ini ke AI: 'Jelaskan diagram alur eksekusi langkah demi langkah dan pastikan "
-            "prasyarat tiap operasi terpenuhi sebelum baris berikutnya dieksekusi.'"
+            "Saat vibecoding dengan asisten AI, model bahasa sering menghasilkan baris kode yang tampak rapi, canggih, dan bebas syntax error. "
+            "Namun, AI kerap melakukan kesalahan urutan secara halus—misalnya memperbarui tampilan sebelum data siap, atau menutup koneksi sebelum proses simpan selesai. "
+            "Jika kamu paham logika pemrograman, kamu tidak akan menelan mentah-mentah kode dari AI. Kamu bisa menelusuri urutan instruksi dan bertanya pada AI: "
+            "'Jelaskan urutan jalannya kode ini langkah demi langkah, dan tunjukkan nilai data di setiap langkah untuk memastikan alurnya sudah masuk akal.'"
         ),
         "reflection_questions": [
             {
-                "question": "Apa perbedaan esensial antara syntax error dan logical error?",
-                "answer": "Syntax error adalah pelanggaran aturan tata bahasa yang dideteksi oleh compiler/parser sebelum berjalan, sedangkan logical error adalah kesalahan urutan atau perhitungan yang tetap berjalan normal namun menghasilkan keluaran keliru."
+                "question": "Apa perbedaan mendasar antara syntax error dan logical error?",
+                "answer": "Syntax error adalah pelanggaran tata bahasa penulisan yang langsung ditolak oleh komputer sebelum berjalan, sedangkan logical error adalah kesalahan urutan atau rumus yang tetap berjalan mulus namun menghasilkan keluaran yang keliru."
             },
             {
-                "question": "Mengapa komputer tidak bisa secara otomatis membetulkan urutan logika instruksi yang terbalik?",
-                "answer": "Karena compiler dan CPU hanya mengevaluasi keabsahan formal instruksi mesin, bukan tujuan bisnis atau niat pembuat kode."
+                "question": "Mengapa teknik tracing (membaca kode baris demi baris) sangat penting saat memeriksa kode hasil buatan AI?",
+                "answer": "Karena AI sering menghasilkan kode yang tampak rapi dan bebas syntax error, namun urutan logikanya bisa saja terbalik atau melewati langkah prasyarat penting."
             }
         ]
     },
 
     "f-variables-data-types": {
-        "summary": "Memberi nama simbolik pada data dan menetapkan sistem tipe data secara presisi sesuai konteks bahasa pemrograman.",
+        "summary": "Menyimpan data dengan nama dan wadah yang sesuai jenisnya.",
         "explanation_simple": (
             "Bayangkan deretan toples kaca berlabel di dapur rumahmu. Toples berlabel 'Gula Pasir' dirancang untuk menampung butiran padat, "
             "botol berlabel 'Kecap Asin' untuk cairan, dan saklar lampu di dinding hanya memiliki dua posisi: menyala atau mati. "
@@ -149,7 +166,7 @@ CURRICULUM_PART1 = {
     },
 
     "f-operators": {
-        "summary": "Simbol komputasi untuk memanipulasi nilai melalui operasi aritmatika, logika, dan perbandingan.",
+        "summary": "Simbol untuk menghitung, membandingkan, dan mengolah nilai.",
         "explanation_simple": (
             "Bayangkan tanda timbangan neraca dan kalkulator saku di meja kasir. Operator aritmatika seperti tambah (+) dan kali (*) "
             "menghitung total tagihan belanjaanmu. Operator perbandingan seperti lebih besar (>) memastikan apakah uang pembayaranmu cukup. "
@@ -209,7 +226,7 @@ CURRICULUM_PART1 = {
     },
 
     "f-conditionals": {
-        "summary": "Mengarahkan alur eksekusi kode ke cabang berbeda berdasarkan evaluasi kondisi boolean.",
+        "summary": "Membuat keputusan dalam program berdasarkan kondisi benar atau salah.",
         "explanation_simple": (
             "Bayangkan rel kereta api dengan tuas wesel pemindah jalur di persimpangan. Ketika kereta melaju, masinis melihat lampu sinyal: "
             "jika lampu berwarna hijau, tuas mengarahkan kereta ke jalur utama; jika lampu merah, kereta diarahkan ke jalur pemberhentian darurat. "
@@ -224,13 +241,12 @@ CURRICULUM_PART1 = {
             "Kebutuhan untuk merespons kondisi dunia nyata yang dinamis menuntut adanya instruksi kondisional di tingkat instruksi mesin."
         ),
         "explanation_technical": (
-            "Kondisional berakar pada instruksi CPU conditional branch (seperti JZ/Jump if Zero atau JNE/Jump if Not Equal) "
-            "yang membaca status register flags prosesor (seperti Zero Flag ZF) setelah operasi perbandingan CMP. "
-            "Jika kondisi terpenuhi, Program Counter diarahkan ke label alamat instruksi cabang target.\n\n"
-            "Konstruksi tingkat tinggi mencakup struktur if, else if, else, serta switch-case. "
+            "Secara teknis, percabangan mengubah alur eksekusi dari yang biasanya mengalir lurus ke bawah menjadi melompat ke blok kode tertentu jika suatu kondisi pengujian bernilai true. "
+            "Jika kondisi bernilai false, blok tersebut dilewati dan program langsung lanjut ke cabang alternatif (else) atau ke baris berikutnya.\n\n"
+            "Konstruksi percabangan mencakup struktur if, else if, else, serta switch-case. "
             "Praktek arsitektur modern sangat menganjurkan pola Guard Clauses (Early Return), di mana kondisi kegagalan atau validasi batas "
-            "diperiksa dan dihentikan di baris-baris awal fungsi, sehingga logika utama tidak tertimbun di dalam piramida kurung kurawal (arrow anti-pattern). "
-            "Konsep truthy dan falsy pada bahasa bertipe dinamis (seperti 0, '', null, undefined di JS) harus diwaspadai karena konversi implisit dapat meloloskan percabangan tak terduga."
+            "diperiksa dan dihentikan di baris-baris awal fungsi, sehingga logika utama tidak tertimbun di dalam piramida kurung kurawal yang menjorok terlalu dalam. "
+            "Konsep truthy dan falsy pada bahasa bertipe dinamis (seperti 0, '', null, undefined di JavaScript) juga harus diwaspadai karena konversi otomatis dapat meloloskan percabangan tak terduga."
         ),
         "misconceptions": [
             {
@@ -260,14 +276,14 @@ CURRICULUM_PART1 = {
                 "answer": "Karena guard clause menyingkirkan kasus gagal/ekstrim di awal dan mengurangi kedalaman indentasi, sehingga alur positif utama program dapat dibaca lurus secara linear."
             },
             {
-                "question": "Apa yang terjadi di tingkat instruksi prosesor ketika cabang conditional branch salah ditebak oleh Branch Predictor CPU?",
-                "answer": "CPU mengalami branch misprediction penalty, di mana pipeline instruksi yang sudah diisi spekulatif harus dibersihkan (flushed) dan dimulai ulang dari alamat target yang benar."
+                "question": "Kapan sebaiknya kita menggunakan struktur switch-case dibandingkan dengan if-else if?",
+                "answer": "Gunakan switch-case saat memeriksa satu variabel diskrit terhadap banyak pilihan tetap yang pasti (seperti status pesanan atau enum), dan gunakan if-else if jika setiap cabang memerlukan evaluasi kondisi logika majemuk atau rentang nilai yang berbeda-beda."
             }
         ]
     },
 
     "f-loops": {
-        "summary": "Mengeksekusi blok kode berulang kali hingga kondisi terminasi tercapai secara terkontrol.",
+        "summary": "Mengulang perintah berkali-kali sampai batas yang ditentukan.",
         "explanation_simple": (
             "Bayangkan ban berjalan di pabrik pengemasan botol minuman. Setiap kali sebuah botol lewat di depan sensor, "
             "lengan robot menutup tutup botol, lalu konveyor bergeser satu langkah ke botol berikutnya. Proses ini diulang "
@@ -283,13 +299,14 @@ CURRICULUM_PART1 = {
             "File kode akan berukuran puluhan megabyte, tidak mungkin diperbaiki jika ada perubahan rumus, dan memboroskan memori instruksi program."
         ),
         "explanation_technical": (
-            "Perulangan diimplementasikan di CPU menggunakan kombinasi instruksi perbandingan nilai dan lompatan bersyarat kembali ke label awal blok kode "
-            "(misalnya CMP counter, limit diikuti JLE loop_start). Tiga struktur perulangan standar meliputi: "
-            "1. for loop: digunakan ketika jumlah iterasi diketahui di awal (mengelola inisialisasi, kondisi terminasi, dan inkremen). "
-            "2. while loop: digunakan ketika pengulangan bergantung pada kondisi eksternal yang belum pasti kapan berubahnya (pre-check condition). "
-            "3. do-while loop: menjamin tubuh kode dieksekusi minimal satu kali sebelum kondisi diperiksa (post-check condition).\n\n"
+            "Secara teknis, perulangan bekerja dengan cara memeriksa kondisi pengujian sebelum atau sesudah blok kode dijalankan. "
+            "Selama kondisi bernilai true, komputer akan mengeksekusi isi blok dan kembali lagi ke langkah pengujian berikutnya. "
+            "Tiga struktur perulangan standar meliputi:\n"
+            "1. for loop: digunakan ketika jumlah iterasi sudah diketahui sejak awal (mengelola inisialisasi, kondisi batas, dan penambahan nilai hitungan).\n"
+            "2. while loop: digunakan ketika pengulangan bergantung pada kondisi eksternal yang belum pasti kapan berubahnya (kondisi dicek sebelum blok berjalan).\n"
+            "3. do-while loop: menjamin tubuh kode dieksekusi minimal satu kali sebelum kondisi diperiksa.\n\n"
             "Dalam eksekusi loop, kata kunci break digunakan untuk keluar seketika dari perulangan, sedangkan continue melewati sisa blok iterasi saat ini "
-            "dan melompat langsung ke evaluasi iterasi berikutnya. Kesalahan paling fatal pada loop adalah infinite loop (di mana variabel kondisi tidak pernah berubah menuju false) "
+            "dan langsung melompat ke putaran berikutnya. Kesalahan paling fatal pada loop adalah infinite loop (di mana variabel kondisi tidak pernah mencapai batas berhenti sehingga program macet) "
             "dan off-by-one error (perulangan kelebihan atau kekurangan satu langkah karena keliru menggunakan operator < versus <=)."
         ),
         "misconceptions": [
@@ -328,7 +345,7 @@ CURRICULUM_PART1 = {
     },
 
     "f-pattern-matching": {
-        "summary": "Memeriksa bentuk dan struktur data secara deklaratif dengan ekstraksi nilai otomatis.",
+        "summary": "Mencocokkan bentuk data dan mengambil isinya secara rapi.",
         "explanation_simple": (
             "Bayangkan mesin penyortir surat canggih di kantor pos pusat. Surat masuk tidak hanya diperiksa warna amplopnya, "
             "tetapi mesin langsung memindai bentuknya: jika berbentuk kotak paket dengan berat di atas 2 kg, kirim ke loket kargo; "
@@ -387,7 +404,7 @@ CURRICULUM_PART1 = {
     },
 
     "f-functions": {
-        "summary": "Membungkus logika komputasi berulang ke dalam blok bernama dengan parameter masukan dan nilai kembalian terprediksi.",
+        "summary": "Membungkus langkah kerja berulang ke dalam satu perintah bernama.",
         "explanation_simple": (
             "Bayangkan resep pembuatan adonan roti di dapur toko roti. Daripada kepala koki mendiktekan takaran terigu, ragi, "
             "dan air setiap kali pesanan baru tiba, resep tersebut dicetak pada selembar kartu bernama 'buatAdonan(jumlahPorsi)'. "
@@ -457,7 +474,7 @@ CURRICULUM_PART1 = {
     },
 
     "f-scope": {
-        "summary": "Aturan keterlihatan dan masa hidup variabel di berbagai tingkatan blok kode dan closure.",
+        "summary": "Wilayah dan batas waktu hidup variabel di dalam kode.",
         "explanation_simple": (
             "Bayangkan sebuah gedung perkantoran bertingkat dengan kartu akses ruangan. Barang yang diletakkan di lobi utama gedung (Global Scope) "
             "dapat dilihat dan diambil oleh siapa saja yang berada di dalam gedung. Namun, berkas rahasia yang disimpan di dalam ruang rapat lantai 4 (Local Scope) "
@@ -519,7 +536,7 @@ CURRICULUM_PART1 = {
     },
 
     "f-type-system": {
-        "summary": "Aturan formal klasifikasi nilai untuk menjamin keabsahan operasi dan integritas memori.",
+        "summary": "Aturan jenis data agar program tidak salah mengolah nilai.",
         "explanation_simple": (
             "Bayangkan pemeriksaan paspor di terminal imigrasi bandara internasional. Setiap paspor memiliki stempel kategori visa: "
             "turis, pekerja ahli, atau diplomat. Petugas imigrasi di gerbang memeriksa paspor sebelum penumpang diizinkan naik pesawat. "
@@ -582,7 +599,7 @@ CURRICULUM_PART1 = {
     },
 
     "f-recursion": {
-        "summary": "Fungsi yang memanggil dirinya sendiri untuk memecahkan masalah dengan dekomposisi masalah turunan yang lebih kecil.",
+        "summary": "Fungsi yang memanggil dirinya sendiri untuk memecahkan masalah bertingkat.",
         "explanation_simple": (
             "Bayangkan membuka boneka kayu Rusia (Matryoshka). Saat kamu membuka boneka terluar, di dalamnya terdapat boneka yang bentuknya persis sama "
             "namun berukuran lebih kecil. Kamu membuka boneka kedua, menemukan boneka ketiga, dan seterusnya. Proses membuka ini berhenti ketika kamu "
