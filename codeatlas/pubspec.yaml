@@ -2,7 +2,7 @@ name: codeatlas
 description: "CodeAtlas — Ensiklopedia interaktif fundamental coding berbahasa Indonesia."
 publish_to: 'none'
 
-version: 1.0.1+2
+version: 1.0.2+3
 
 environment:
   sdk: ^3.13.3
@@ -26,3 +26,4 @@ flutter:
 
   assets:
     - assets/content/content.json
+    - assets/branding/

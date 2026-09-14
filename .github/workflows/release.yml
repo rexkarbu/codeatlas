@@ -42,9 +42,70 @@ jobs:
           flutter analyze
           flutter test test -j 1
 
+      - name: Decode Release Keystore
+        id: decode_keystore
+        shell: bash
+        run: |
+          if [ -n "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" ]; then
+            echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > "$RUNNER_TEMP/release.keystore"
+            echo "keystore_path=$RUNNER_TEMP/release.keystore" >> $GITHUB_OUTPUT
+            echo "has_keystore=true" >> $GITHUB_OUTPUT
+          else
+            echo "ERROR: RELEASE_KEYSTORE_BASE64 secret is missing or empty!"
+            echo "Release APK builds require a valid persistent signing keystore."
+            exit 1
+          fi
+
       - name: Build Release APK
         working-directory: codeatlas
+        env:
+          KEYSTORE_PATH: ${{ steps.decode_keystore.outputs.keystore_path }}
+          KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
         run: flutter build apk --release
+
+      - name: Verify APK Signing Certificate Fingerprint
+        shell: bash
+        run: |
+          APK_PATH="codeatlas/build/app/outputs/flutter-apk/app-release.apk"
+          EXPECTED_FINGERPRINT="5ad1905ab25b42a6a57ae43faf436149d02913458597d7139ce802f79627afb1"
+
+          echo "Locating apksigner tool..."
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -n 1)
+          if [ -z "$APKSIGNER" ]; then
+            echo "ERROR: apksigner tool not found in $ANDROID_HOME/build-tools"
+            exit 1
+          fi
+          echo "Using apksigner: $APKSIGNER"
+
+          ACTUAL_FINGERPRINT=$("$APKSIGNER" verify --print-certs "$APK_PATH" | grep -i "certificate SHA-256 digest:" | head -n 1 | awk '{print $NF}' | tr '[:upper:]' '[:lower:]')
+
+          echo "=========================================="
+          echo "Expected SHA-256: $EXPECTED_FINGERPRINT"
+          echo "Actual SHA-256:   $ACTUAL_FINGERPRINT"
+          echo "=========================================="
+
+          if [ -z "$ACTUAL_FINGERPRINT" ]; then
+            echo "ERROR: Unable to extract certificate SHA-256 digest from $APK_PATH"
+            exit 1
+          fi
+
+          if [ "$ACTUAL_FINGERPRINT" != "$EXPECTED_FINGERPRINT" ]; then
+            echo "SECURITY FATAL: APK certificate fingerprint does NOT match designated release key!"
+            echo "Aborting workflow to prevent publishing an unverified or incompatible APK."
+            exit 1
+          fi
+
+          echo "SUCCESS: APK signing certificate fingerprint verified successfully."
+
+      - name: Clean up Keystore
+        if: always()
+        shell: bash
+        run: |
+          if [ -f "$RUNNER_TEMP/release.keystore" ]; then
+            rm -f "$RUNNER_TEMP/release.keystore"
+          fi
 
       - name: Prepare Release Artifacts
         run: |
@@ -69,13 +130,22 @@ jobs:
           body: |
             ## Pembaruan CodeAtlas ${{ steps.vars.outputs.tag }}
 
+            > [!IMPORTANT]
+            > **Pemberitahuan Instalasi & Transisi Data:**
+            > Mulai versi ini (`v1.0.2`), CodeAtlas menggunakan Application ID baru (`com.codeatlas.app`) dengan kunci penandatanganan (*release signing key*) resmi yang persisten.
+            > - Paket baru ini akan terpasang sebagai **aplikasi terpisah berdampingan** dengan versi lama (`com.codeatlas.codeatlas`).
+            > - **Progres belajar dan catatan pribadi dari aplikasi lama tidak berpindah secara otomatis**.
+            > - **Jangan menghapus (*uninstall*) aplikasi lama** terlebih dahulu jika Anda masih ingin membuka atau mencatat progres dan catatan yang tersimpan di versi lama.
+            > - Seluruh pembaruan di masa mendatang akan dapat diperbarui secara langsung (*in-place update*) menggunakan kunci resmi persisten ini.
+
             ### ✨ Sorotan Rilis:
-            - **Identitas Visual & Ikon Baru**: Ikon aplikasi resmi bertema Deep Tech Synth—memadukan kisi kartografi/atlas pengetahuan dan kurung kode (`< / >`). Dilengkapi dukungan Android adaptive icon, round icon, dan themed monochrome icon.
-            - **Audit & Keterbacaan Materi (Content v5)**: Seluruh 99 topik diaudit dengan penjelasan ringkas, akurat, dan langsung pada inti fungsi.
-            - **Revisi Menyeluruh Programming Logic**: Penjelasan terstruktur 8 bagian pedagogis tanpa jargon hardware CPU/register.
-            - **Peningkatan Keterbacaan Artikel**: Navigasi Daftar Isi dipindahkan ke AppBar, teks isi menggunakan bobot normal (*regular*), dan penghapusan FAB.
-            - **Penyederhanaan Perbandingan Sintaks**: Tombol pemilih konsep tunggal membuka modal bottom sheet dengan label Bahasa Indonesia, kartu vertikal responsif, dan bebas overflow pada skala teks 200%.
-            - **52 Pengujian Lulus (100% Pass)**: Integritas kurikulum, graf ketergantungan asiklik (Kahn), migrasi basis data SQLite, dan ketahanan UI terverifikasi penuh.
+            - **Identitas Visual & Ikon Baru (Streamlined 32px)**: Desain ikon dan logo aplikasi diperbarui menggunakan rendering aset native (`Image.asset`), siluet kurung kode (`< / >`) tegas, sumbu meridian solid, dan simpul konstelasi yang tajam pada resolusi kecil (32px). Mendukung adaptive icon, round icon, dan monochrome icon Android.
+            - **Audit & Keterbacaan Materi (Content v5)**: Seluruh 99 topik diaudit dengan penjelasan ringkas, akurat, dan langsung pada inti fungsi tanpa jargon rumit.
+            - **Revisi Menyeluruh Programming Logic**: Penjelasan terstruktur 8 bagian pedagogis yang ramah pemula.
+            - **Peningkatan Keterbacaan Artikel**: Navigasi Daftar Isi dipindahkan ke AppBar, teks isi menggunakan bobot normal (*regular*), dan penghapusan FAB agar tidak menutupi materi.
+            - **Penyederhanaan Perbandingan Sintaks**: Tombol pemilih konsep tunggal membuka bottom sheet dengan label Bahasa Indonesia, kartu vertikal responsif, dan bebas overflow pada skala teks 200%.
+            - **Integritas Penandatanganan & Keamanan Rilis**: Rilis dibangun dengan verifikasi fingerprint SHA-256 otomatis sebelum publikasi.
+            - **55 Pengujian Lulus (100% Pass)**: Integritas kurikulum, graf dependensi asiklik (Kahn), dan ketahanan antarmuka terverifikasi penuh.
 
             ### 📦 Berkas Instalasi:
             Unduh berkas `CodeAtlas.apk` di bawah dan pasang pada perangkat Android Anda.

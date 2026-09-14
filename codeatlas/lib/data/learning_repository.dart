@@ -278,4 +278,118 @@ class LearningRepository {
     }
     return null; // All done
   }
+
+  // ─── Data Preservation & Backup/Restore ───
+
+  /// Export all user data (progress, personal notes, and custom learning paths)
+  /// as a JSON-serializable Map for data migration or backup.
+  Future<Map<String, dynamic>> exportUserData() async {
+    final progressRows = await db.query('progress');
+    final paths = await getAllPaths();
+    final exportedPaths = <Map<String, dynamic>>[];
+
+    for (final path in paths) {
+      if (path.id == null) continue;
+      final items = await _getPathItems(path.id!);
+      exportedPaths.add({
+        'name': path.name,
+        'goal': path.goal,
+        'created_at': path.createdAt.millisecondsSinceEpoch,
+        'updated_at': path.updatedAt.millisecondsSinceEpoch,
+        'topics': items.map((i) => i.topicId).toList(),
+      });
+    }
+
+    return {
+      'format': 'codeatlas_user_backup_v1',
+      'exported_at': DateTime.now().toUtc().toIso8601String(),
+      'progress': progressRows,
+      'learning_paths': exportedPaths,
+    };
+  }
+
+  /// Restore user data from a backup Map within an atomic transaction.
+  /// Preserves existing records unless overwritten by the backup.
+  Future<int> importUserData(Map<String, dynamic> backupData) async {
+    if (backupData['format'] != 'codeatlas_user_backup_v1') {
+      throw const FormatException('Format cadangan tidak dikenali');
+    }
+
+    final progressList =
+        (backupData['progress'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+    final pathsList =
+        (backupData['learning_paths'] as List?)?.cast<Map<String, dynamic>>() ??
+        [];
+
+    var importedProgressCount = 0;
+
+    await db.transaction((txn) async {
+      for (final p in progressList) {
+        final topicId = p['topic_id'] as String?;
+        if (topicId == null) continue;
+
+        // Verify topic exists before inserting to respect FK constraint
+        final topicExists = await txn.query(
+          'topics',
+          columns: ['id'],
+          where: 'id = ?',
+          whereArgs: [topicId],
+        );
+        if (topicExists.isEmpty) continue;
+
+        await txn.insert(
+          'progress',
+          {
+            'topic_id': topicId,
+            'status': p['status'] ?? 'not_started',
+            'notes': p['notes'] ?? '',
+            'last_reviewed_at': p['last_reviewed_at'],
+            'updated_at':
+                p['updated_at'] ??
+                DateTime.now().toUtc().millisecondsSinceEpoch,
+          },
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+        importedProgressCount++;
+      }
+
+      for (final pathData in pathsList) {
+        final name = pathData['name'] as String?;
+        final goal = pathData['goal'] as String? ?? 'custom';
+        final topics = (pathData['topics'] as List?)?.cast<String>() ?? [];
+        final createdAt =
+            pathData['created_at'] as int? ??
+            DateTime.now().toUtc().millisecondsSinceEpoch;
+        final updatedAt = pathData['updated_at'] as int? ?? createdAt;
+
+        if (name == null || name.trim().isEmpty || topics.isEmpty) continue;
+
+        final pathId = await txn.insert('learning_paths', {
+          'name': name.trim(),
+          'goal': goal,
+          'created_at': createdAt,
+          'updated_at': updatedAt,
+        });
+
+        for (var i = 0; i < topics.length; i++) {
+          final tId = topics[i];
+          final topicExists = await txn.query(
+            'topics',
+            columns: ['id'],
+            where: 'id = ?',
+            whereArgs: [tId],
+          );
+          if (topicExists.isNotEmpty) {
+            await txn.insert(
+              'learning_path_items',
+              {'path_id': pathId, 'topic_id': tId, 'position': i},
+              conflictAlgorithm: ConflictAlgorithm.ignore,
+            );
+          }
+        }
+      }
+    });
+
+    return importedProgressCount;
+  }
 }

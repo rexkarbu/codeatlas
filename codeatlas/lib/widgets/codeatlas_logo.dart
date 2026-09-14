@@ -1,8 +1,9 @@
-// lib/widgets/codeatlas_logo.dart — Reusable vector logo & icon widget for CodeAtlas.
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 
+/// Application logo widget utilizing pre-rendered assets via [Image.asset].
+///
+/// Streamlined visual identity: bold 32px syntax brackets, central atlas hub,
+/// and clear constellation apex nodes for maximum legibility at small sizes (32px).
 class CodeAtlasLogo extends StatelessWidget {
   final double size;
   final bool showBackground;
@@ -19,25 +20,44 @@ class CodeAtlasLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String assetPath;
+    if (isMonochrome) {
+      assetPath = 'assets/branding/codeatlas_logo_monochrome.png';
+    } else if (showBackground) {
+      assetPath = 'assets/branding/codeatlas_icon_1024.png';
+    } else {
+      assetPath = 'assets/branding/codeatlas_logo_transparent.png';
+    }
+
+    Widget image = Image.asset(
+      assetPath,
+      width: size,
+      height: size,
+      fit: BoxFit.contain,
+      filterQuality: FilterQuality.medium,
+    );
+
+    if (isMonochrome) {
+      final color =
+          monochromeColor ??
+          (Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : const Color(0xFF1E1B4B));
+      image = ColorFiltered(
+        colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+        child: image,
+      );
+    }
+
     return SizedBox(
       width: size,
       height: size,
-      child: CustomPaint(
-        size: Size(size, size),
-        painter: CodeAtlasLogoPainter(
-          showBackground: showBackground,
-          isMonochrome: isMonochrome,
-          monochromeColor:
-              monochromeColor ??
-              (Theme.of(context).brightness == Brightness.dark
-                  ? Colors.white
-                  : const Color(0xFF1E1B4B)),
-        ),
-      ),
+      child: image,
     );
   }
 }
 
+/// Streamlined vector painter used for asset generation and precision scaling.
 class CodeAtlasLogoPainter extends CustomPainter {
   final bool showBackground;
   final bool isMonochrome;
@@ -57,7 +77,7 @@ class CodeAtlasLogoPainter extends CustomPainter {
 
     final center = const Offset(256, 256);
 
-    // 1. Optional Squircle Background
+    // 1. Squircle Background
     if (showBackground) {
       final bgRect = const Rect.fromLTWH(0, 0, 512, 512);
       final bgRRect = RRect.fromRectAndRadius(
@@ -78,7 +98,7 @@ class CodeAtlasLogoPainter extends CustomPainter {
           ).createShader(bgRect);
         canvas.drawRRect(bgRRect, bgPaint);
 
-        // Specular highlight
+        // Specular border highlight
         final borderPaint = Paint()
           ..color = const Color(0xFF8B5CF6).withValues(alpha: 0.22)
           ..style = PaintingStyle.stroke
@@ -95,51 +115,33 @@ class CodeAtlasLogoPainter extends CustomPainter {
         final glowPaint = Paint()
           ..shader = uiGradient(
             center,
-            180,
-            const Color(0xFF8B5CF6).withValues(alpha: 0.35),
+            160,
+            const Color(0xFF8B5CF6).withValues(alpha: 0.32),
             Colors.transparent,
           );
-        canvas.drawCircle(center, 180, glowPaint);
+        canvas.drawCircle(center, 160, glowPaint);
       }
     }
 
-    // 2. Subtle Coordinate Grid & Latitude Circles (if not monochrome)
-    if (!isMonochrome) {
-      final gridPaint = Paint()
-        ..color = const Color(0xFF8B5CF6).withValues(alpha: 0.15)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.5;
-
-      canvas.drawCircle(center, 168, gridPaint);
-      canvas.drawCircle(center, 108, gridPaint);
-      canvas.drawLine(const Offset(256, 80), const Offset(256, 432), gridPaint);
-      canvas.drawLine(const Offset(80, 256), const Offset(432, 256), gridPaint);
-    }
-
-    // 3. Central Meridian Axis
+    // 2. Streamlined Central Meridian Axis
     final meridianPaint = Paint()
-      ..color = isMonochrome ? monochromeColor : const Color(0xFFC4B5FD)
-      ..strokeWidth = 10
+      ..color = isMonochrome
+          ? monochromeColor.withValues(alpha: 0.4)
+          : const Color(0xFF8B5CF6).withValues(alpha: 0.35)
+      ..strokeWidth = 8
       ..strokeCap = StrokeCap.round;
-    _drawDashedLine(
-      canvas,
-      const Offset(256, 136),
-      const Offset(256, 376),
-      10,
-      12,
-      meridianPaint,
-    );
+    canvas.drawLine(const Offset(256, 110), const Offset(256, 402), meridianPaint);
 
-    // 4. Code Brackets '<' and '>'
+    // 3. Primary Geometry: Code Syntax Brackets '<' and '>' (Bold 32px stroke)
     final leftPath = Path()
-      ..moveTo(230, 148)
+      ..moveTo(236, 156)
       ..lineTo(140, 256)
-      ..lineTo(230, 364);
+      ..lineTo(236, 356);
 
     final rightPath = Path()
-      ..moveTo(282, 148)
+      ..moveTo(276, 156)
       ..lineTo(372, 256)
-      ..lineTo(282, 364);
+      ..lineTo(276, 356);
 
     if (isMonochrome) {
       final bracketPaint = Paint()
@@ -157,9 +159,9 @@ class CodeAtlasLogoPainter extends CustomPainter {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [Color(0xFFA78BFA), Color(0xFF8B5CF6), Color(0xFF06B6D4)],
-        ).createShader(const Rect.fromLTWH(140, 148, 90, 216))
+        ).createShader(const Rect.fromLTWH(140, 156, 96, 200))
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 28
+        ..strokeWidth = 32
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round;
       canvas.drawPath(leftPath, leftPaint);
@@ -170,36 +172,28 @@ class CodeAtlasLogoPainter extends CustomPainter {
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
           colors: [Color(0xFF06B6D4), Color(0xFF38BDF8)],
-        ).createShader(const Rect.fromLTWH(282, 148, 90, 216))
+        ).createShader(const Rect.fromLTWH(276, 156, 96, 200))
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 28
+        ..strokeWidth = 32
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round;
       canvas.drawPath(rightPath, rightPaint);
     }
 
-    // 5. Constellation Knowledge Nodes on Apexes
+    // 4. Constellation Nodes on Apexes (2 vertex nodes only)
     if (isMonochrome) {
       final nodePaint = Paint()..color = monochromeColor;
       canvas.drawCircle(const Offset(140, 256), 16, nodePaint);
       canvas.drawCircle(const Offset(372, 256), 16, nodePaint);
-      canvas.drawCircle(const Offset(230, 148), 14, nodePaint);
-      canvas.drawCircle(const Offset(230, 364), 14, nodePaint);
-      canvas.drawCircle(const Offset(282, 148), 14, nodePaint);
-      canvas.drawCircle(const Offset(282, 364), 14, nodePaint);
     } else {
-      _drawNode(canvas, const Offset(140, 256), 14, const Color(0xFFA78BFA));
-      _drawNode(canvas, const Offset(372, 256), 14, const Color(0xFF38BDF8));
-      _drawNode(canvas, const Offset(230, 148), 12, const Color(0xFFC4B5FD));
-      _drawNode(canvas, const Offset(230, 364), 12, const Color(0xFF8B5CF6));
-      _drawNode(canvas, const Offset(282, 148), 12, const Color(0xFF38BDF8));
-      _drawNode(canvas, const Offset(282, 364), 12, const Color(0xFF06B6D4));
+      _drawNode(canvas, const Offset(140, 256), 16, const Color(0xFFA78BFA));
+      _drawNode(canvas, const Offset(372, 256), 16, const Color(0xFF38BDF8));
     }
 
-    // 6. Central Atlas Hub Core
+    // 5. Central Atlas Hub Core (Clear visual anchor across all scales)
     if (isMonochrome) {
       canvas.drawCircle(center, 26, Paint()..color = monochromeColor);
-      canvas.drawCircle(center, 10, Paint()..color = Colors.transparent);
+      canvas.drawCircle(center, 10, Paint()..color = Colors.black);
     } else {
       final coreOuter = Paint()
         ..color = const Color(0xFF0F0D2E)
@@ -212,31 +206,10 @@ class CodeAtlasLogoPainter extends CustomPainter {
         ..color = Colors.white
         ..style = PaintingStyle.fill;
 
-      canvas.drawCircle(center, 22, coreOuter);
-      canvas.drawCircle(center, 22, coreRing);
-      canvas.drawCircle(center, 8, coreNucleus);
+      canvas.drawCircle(center, 26, coreOuter);
+      canvas.drawCircle(center, 26, coreRing);
+      canvas.drawCircle(center, 10, coreNucleus);
     }
-
-    // 7. Cardinal Orientation Marks (North & South Stars)
-    final northPath = Path()
-      ..moveTo(256, 92)
-      ..lineTo(263, 108)
-      ..lineTo(256, 120)
-      ..lineTo(249, 108)
-      ..close();
-    final southPath = Path()
-      ..moveTo(256, 420)
-      ..lineTo(263, 404)
-      ..lineTo(256, 392)
-      ..lineTo(249, 404)
-      ..close();
-
-    final northPaint = Paint()
-      ..color = isMonochrome ? monochromeColor : const Color(0xFF38BDF8);
-    final southPaint = Paint()
-      ..color = isMonochrome ? monochromeColor : const Color(0xFF8B5CF6);
-    canvas.drawPath(northPath, northPaint);
-    canvas.drawPath(southPath, southPaint);
 
     canvas.restore();
   }
@@ -245,38 +218,11 @@ class CodeAtlasLogoPainter extends CustomPainter {
     final borderPaint = Paint()
       ..color = const Color(0xFF1E1B4B)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 4;
+      ..strokeWidth = 5;
     final fillPaint = Paint()..color = color;
 
     canvas.drawCircle(offset, radius, fillPaint);
     canvas.drawCircle(offset, radius, borderPaint);
-  }
-
-  void _drawDashedLine(
-    Canvas canvas,
-    Offset start,
-    Offset end,
-    double dashLength,
-    double gapLength,
-    Paint paint,
-  ) {
-    final dx = end.dx - start.dx;
-    final dy = end.dy - start.dy;
-    final totalDist = math.sqrt(dx * dx + dy * dy);
-    final ux = dx / totalDist;
-    final uy = dy / totalDist;
-
-    double currentDist = 0;
-    while (currentDist < totalDist) {
-      final p1 = Offset(
-        start.dx + ux * currentDist,
-        start.dy + uy * currentDist,
-      );
-      final len = math.min(dashLength, totalDist - currentDist);
-      final p2 = Offset(p1.dx + ux * len, p1.dy + uy * len);
-      canvas.drawLine(p1, p2, paint);
-      currentDist += dashLength + gapLength;
-    }
   }
 
   Shader uiGradient(Offset center, double radius, Color start, Color end) {

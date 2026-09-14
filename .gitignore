@@ -24,6 +24,10 @@ __pycache__/
 **/android/app/release/
 **/android/.gradle/
 **/android/local.properties
+*.keystore
+*.jks
+key.properties
+.secrets/
 
 # iOS / macOS / Windows build
 **/ios/Flutter/.last_build_id

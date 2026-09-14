@@ -1,6 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Central Meridian Axis -->
+  <line x1="256" y1="110" x2="256" y2="402" 
+        stroke="#FFFFFF" 
+        stroke-opacity="0.4" 
+        stroke-width="8" 
+        stroke-linecap="round"/>
+
   <!-- Left Code Bracket '<' -->
-  <path d="M 230 148 L 140 256 L 230 364" 
+  <path d="M 236 156 L 140 256 L 236 356" 
         fill="none" 
         stroke="#FFFFFF" 
         stroke-width="32" 
@@ -8,33 +15,18 @@
         stroke-linejoin="round"/>
 
   <!-- Right Code Bracket '>' -->
-  <path d="M 282 148 L 372 256 L 282 364" 
+  <path d="M 276 156 L 372 256 L 276 356" 
         fill="none" 
         stroke="#FFFFFF" 
         stroke-width="32" 
         stroke-linecap="round" 
         stroke-linejoin="round"/>
 
-  <!-- Central Meridian Axis -->
-  <line x1="256" y1="136" x2="256" y2="376" 
-        stroke="#FFFFFF" 
-        stroke-width="12" 
-        stroke-linecap="round" 
-        stroke-dasharray="1 22"/>
-
   <!-- Apex Nodes -->
   <circle cx="140" cy="256" r="16" fill="#FFFFFF"/>
   <circle cx="372" cy="256" r="16" fill="#FFFFFF"/>
-  <circle cx="230" cy="148" r="14" fill="#FFFFFF"/>
-  <circle cx="230" cy="364" r="14" fill="#FFFFFF"/>
-  <circle cx="282" cy="148" r="14" fill="#FFFFFF"/>
-  <circle cx="282" cy="364" r="14" fill="#FFFFFF"/>
 
-  <!-- Center Core Nucleus -->
-  <circle cx="256" cy="256" r="26" fill="#FFFFFF"/>
-  <circle cx="256" cy="256" r="10" fill="#000000"/>
-
-  <!-- Cardinal Indicators -->
-  <polygon points="256,88 265,108 256,122 247,108" fill="#FFFFFF"/>
-  <polygon points="256,424 265,404 256,390 247,404" fill="#FFFFFF"/>
+  <!-- Central Atlas Hub Core -->
+  <circle cx="256" cy="256" r="26" fill="#000000" stroke="#FFFFFF" stroke-width="8"/>
+  <circle cx="256" cy="256" r="10" fill="#FFFFFF"/>
 </svg>
