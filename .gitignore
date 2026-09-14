@@ -1,0 +1,52 @@
+# User requested exclusion
+hasil/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.db
+*.sqlite
+
+# Flutter & Dart
+**/build/
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.pub-cache/
+**/.pub/
+**/coverage/
+**/doc/api/
+
+# Android build outputs & local config
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+**/android/.gradle/
+**/android/local.properties
+
+# iOS / macOS / Windows build
+**/ios/Flutter/.last_build_id
+**/ios/Pods/
+**/.generated/
+
+# Symbolication & Obfuscation
+app.*.symbols
+app.*.map.json
+
+# IDE & OS
+.DS_Store
+.history/
+*.iml
+*.ipr
+*.iws
+.idea/
+.vscode/
+*.class
+*.log
+*.swp
+.atom/
+.buildlog/
+.swiftpm/
+.widget_preview/
+migrate_working_dir/

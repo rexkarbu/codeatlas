@@ -1,0 +1,201 @@
+{
+  "format_version": 1,
+  "content_version": 1,
+  "dataset": "reference",
+  "locale": "id-ID",
+  "categories": [
+    {
+      "id": "f-logic",
+      "parent_id": null,
+      "layer": "fundamentals",
+      "kind": "group",
+      "title": "Logika & Sintaks Dasar",
+      "description": "Belajar memberi instruksi yang jelas, menyimpan informasi, dan mengolahnya.",
+      "sort_order": 1
+    }
+  ],
+  "topics": [
+    {
+      "id": "f-programming-logic",
+      "category_id": "f-logic",
+      "title": "Programming Logic",
+      "level": "beginner",
+      "summary": "Menyusun langkah yang jelas agar komputer melakukan hal yang kita maksud.",
+      "explanation_simple": "Bayangkan kamu meminta seseorang menyiapkan segelas air. Instruksi 'ambil gelas, tuang air, lalu minum' masuk akal karena urutannya jelas. Jika 'minum' diletakkan sebelum air dituangkan, hasilnya tidak sesuai harapan. Komputer juga membutuhkan instruksi yang jelas. Analogi ini punya batas: manusia bisa menebak maksud kita, sedangkan program mengikuti aturan yang ditulis dan tidak otomatis memahami niat pembuatnya.",
+      "explanation_technical": "Programming logic adalah cara menyusun langkah dan aturan untuk mengubah masukan menjadi hasil yang diinginkan. Tiga pola dasarnya adalah urutan instruksi (sequence), pemilihan berdasarkan kondisi (selection), dan pengulangan (iteration). Topik ini mengenalkan urutan terlebih dahulu; percabangan dan pengulangan dibahas di topik berikutnya. Algoritma adalah rangkaian langkah penyelesaian masalah, sedangkan sintaks adalah aturan penulisan dalam bahasa tertentu. Kode dapat benar secara sintaks tetapi salah secara logika jika urutannya tidak sesuai tujuan.",
+      "code_examples": [
+        {
+          "language": "typescript",
+          "comparison_key": "sequence",
+          "label": "Menampilkan tiga instruksi secara berurutan",
+          "code": "console.log(\"Ambil gelas\");\nconsole.log(\"Tuang air\");\nconsole.log(\"Minum air\");",
+          "explanation": "Baca dari atas ke bawah. Setiap console.log menampilkan satu baris teks. Program ini hanya menampilkan instruksi; program tidak mengambil gelas atau menuangkan air secara fisik.",
+          "expected_output": "Ambil gelas\nTuang air\nMinum air"
+        },
+        {
+          "language": "python",
+          "comparison_key": "sequence",
+          "label": "Urutan yang sama dalam Python",
+          "code": "print(\"Ambil gelas\")\nprint(\"Tuang air\")\nprint(\"Minum air\")",
+          "explanation": "print menampilkan teks. Nama perintahnya berbeda dari TypeScript, tetapi urutan instruksi dan hasil bacaan sama.",
+          "expected_output": "Ambil gelas\nTuang air\nMinum air"
+        },
+        {
+          "language": "dart",
+          "comparison_key": "sequence",
+          "label": "Urutan yang sama dalam Dart",
+          "code": "void main() {\n  print(\"Ambil gelas\");\n  print(\"Tuang air\");\n  print(\"Minum air\");\n}",
+          "explanation": "main adalah titik awal program Dart. Baca tiga print di dalam kurung kurawal dari atas ke bawah. Bentuk fungsi main akan dijelaskan lebih lengkap pada topik Functions.",
+          "expected_output": "Ambil gelas\nTuang air\nMinum air"
+        }
+      ],
+      "prerequisite_ids": [],
+      "related_topic_ids": ["f-variables-data-types", "f-operators"],
+      "why_vibecoding_matters": "Saat AI membuat alur checkout, kode bisa terlihat rapi tetapi mengosongkan keranjang sebelum pesanan berhasil disimpan. Memahami urutan membuatmu bisa meminta AI menjelaskan kapan data dibaca, disimpan, dan dihapus, lalu memeriksa apakah urutannya sesuai kebutuhan.",
+      "keywords": ["logika", "urutan", "sequence", "alur program"],
+      "estimated_minutes": 5,
+      "sort_order": 1,
+      "is_active": true
+    },
+    {
+      "id": "f-variables-data-types",
+      "category_id": "f-logic",
+      "title": "Variables & Data Types",
+      "level": "beginner",
+      "summary": "Memberi nama pada informasi dan mengenali jenis nilainya.",
+      "explanation_simple": "Bayangkan rak dengan label 'nama barang', 'jumlah', dan 'tersedia'. Label membantu kamu menemukan informasi yang tepat. Isi 'jumlah' cocok berupa angka, sedangkan 'tersedia' cukup ya atau tidak. Variabel mirip label untuk mengakses nilai. Analogi rak tidak selalu harfiah: beberapa nama dapat merujuk ke objek yang sama, dan beberapa nama memang tidak boleh diberi nilai baru.",
+      "explanation_technical": "Variabel menghubungkan nama dengan nilai atau lokasi penyimpanan, tergantung model bahasanya. Jenis data menentukan nilai dan operasi yang masuk akal, misalnya string untuk teks, angka untuk perhitungan, dan boolean untuk true/false. TypeScript dan Dart memeriksa banyak aturan tipe sebelum program dijalankan; Python memeriksa operasi tipe saat program berjalan. Python tetap mempunyai tipe data walaupun contoh ini tidak menuliskan anotasi tipe. Di TypeScript, let mengizinkan pemberian nilai baru dan const melarang penggantian binding; const tidak otomatis membekukan isi sebuah objek. Di Dart, final melarang pemberian nilai baru pada variabel. Perbedaan sistem tipe dibahas lebih jauh di Type System.",
+      "code_examples": [
+        {
+          "language": "typescript",
+          "comparison_key": "variables",
+          "label": "Nama, jumlah, dan ketersediaan sebuah barang",
+          "code": "const nama: string = \"Buku\";\nlet jumlah: number = 2;\nconst tersedia: boolean = true;\njumlah = 3;\nconsole.log(nama, jumlah, tersedia);",
+          "explanation": "nama berisi teks, jumlah berisi angka, dan tersedia berisi boolean. Tanda = memberikan nilai. Nilai jumlah berubah dari 2 menjadi 3 sebelum ditampilkan. Anotasi setelah titik dua adalah petunjuk tipe TypeScript.",
+          "expected_output": "Buku 3 true"
+        },
+        {
+          "language": "python",
+          "comparison_key": "variables",
+          "label": "Data yang sama dalam Python",
+          "code": "nama = \"Buku\"\njumlah = 2\ntersedia = True\njumlah = 3\nprint(nama, jumlah, tersedia)",
+          "explanation": "Anotasi tipe tidak diperlukan pada contoh Python ini. True ditulis dengan huruf T besar. Nilai akhir sama, tetapi pembatasan pemberian nilai baru berbeda: ketiga nama di sini dapat diberi nilai baru.",
+          "expected_output": "Buku 3 True"
+        },
+        {
+          "language": "dart",
+          "comparison_key": "variables",
+          "label": "Data yang sama dalam Dart",
+          "code": "void main() {\n  final String nama = \"Buku\";\n  int jumlah = 2;\n  final bool tersedia = true;\n  jumlah = 3;\n  print(\"$nama $jumlah $tersedia\");\n}",
+          "explanation": "String, int, dan bool menyatakan jenis data. jumlah dapat diberi nilai baru; nama dan tersedia menggunakan final. Bentuk $nama di dalam teks menyisipkan nilai variabel ke teks hasil.",
+          "expected_output": "Buku 3 true"
+        }
+      ],
+      "prerequisite_ids": ["f-programming-logic"],
+      "related_topic_ids": ["f-programming-logic", "f-operators"],
+      "why_vibecoding_matters": "AI kadang memperlakukan harga dari formulir sebagai angka padahal nilainya masih berupa teks. Akibatnya, operasi yang terlihat seperti penjumlahan bisa menghasilkan gabungan teks. Kamu perlu mengenali jenis nilai dan meminta konversi serta validasi pada batas masukan, bukan sekadar meminta AI menghilangkan pesan error tipe.",
+      "keywords": ["variabel", "tipe data", "string", "number", "boolean", "let", "const", "final"],
+      "estimated_minutes": 7,
+      "sort_order": 2,
+      "is_active": true
+    },
+    {
+      "id": "f-operators",
+      "category_id": "f-logic",
+      "title": "Operators",
+      "level": "beginner",
+      "summary": "Mengenali simbol untuk menghitung, membandingkan, dan menggabungkan syarat.",
+      "explanation_simple": "Saat membeli tiga buku seharga lima ribu rupiah, kamu mengalikan harga dengan jumlah. Setelah itu kamu membandingkan totalnya dengan uang yang dibawa. Kamu juga perlu memastikan toko buka. Simbol operator mirip tombol kalkulator dan kata penghubung pada keputusan sehari-hari: cukup uang DAN toko buka. Analogi kalkulator terbatas karena operator program juga dapat bekerja pada teks dan nilai benar/salah.",
+      "explanation_technical": "Operator melakukan operasi pada satu atau lebih operand, yaitu nilai yang diolah. Operator aritmetika seperti * menghitung nilai; operator perbandingan seperti >= menghasilkan boolean; operator logika menggabungkan atau membalik kondisi. Dalam TypeScript dan Dart, && adalah AND logis; padanan pada contoh Python adalah and. Pada contoh ini kedua operand AND berupa boolean. Jangan menyamakan = untuk assignment dengan pemeriksaan kesamaan: TypeScript lazim menggunakan === untuk kesamaan ketat, sedangkan Python dan Dart menggunakan ==. Prioritas operator memengaruhi urutan evaluasi; gunakan kurung jika maksud ekspresi sulit dibaca. TypeScript dan Python memiliki detail perilaku operand non-boolean yang dibahas pada materi lanjutan.",
+      "code_examples": [
+        {
+          "language": "typescript",
+          "comparison_key": "operators",
+          "label": "Uang cukup tetapi toko tutup",
+          "code": "const total = 5000 * 3;\nconst cukup = 20000 >= total;\nconst tokoBuka = false;\nconsole.log(total);\nconsole.log(cukup && tokoBuka);",
+          "explanation": "* menghasilkan 15000. Perbandingan 20000 >= 15000 bernilai true. AND memerlukan kedua kondisi bernilai true; karena tokoBuka false, hasil akhirnya false.",
+          "expected_output": "15000\nfalse"
+        },
+        {
+          "language": "python",
+          "comparison_key": "operators",
+          "label": "Perhitungan dan kondisi yang sama dalam Python",
+          "code": "total = 5000 * 3\ncukup = 20000 >= total\ntoko_buka = False\nprint(total)\nprint(cukup and toko_buka)",
+          "explanation": "Python menggunakan kata and. Untuk dua operand boolean pada contoh ini, maknanya sama dengan && pada TypeScript dan Dart. False memakai huruf F besar.",
+          "expected_output": "15000\nFalse"
+        },
+        {
+          "language": "dart",
+          "comparison_key": "operators",
+          "label": "Perhitungan dan kondisi yang sama dalam Dart",
+          "code": "void main() {\n  final total = 5000 * 3;\n  final cukup = 20000 >= total;\n  final tokoBuka = false;\n  print(total);\n  print(cukup && tokoBuka);\n}",
+          "explanation": "Dart menyimpulkan tipe dari nilai awal pada contoh ini. && menggabungkan dua kondisi boolean. Hasil tetap false karena toko tutup walaupun uang cukup.",
+          "expected_output": "15000\nfalse"
+        }
+      ],
+      "prerequisite_ids": ["f-variables-data-types"],
+      "related_topic_ids": ["f-programming-logic", "f-variables-data-types"],
+      "why_vibecoding_matters": "Pada kode hasil AI, satu simbol dapat mengubah aturan bisnis: > tidak mencakup batas yang sama dengan >=, dan AND berbeda dari OR. Saat membaca syarat diskon atau akses, periksa kasus tepat di batas dan syarat yang bernilai false. Memahami operator membantu kamu menemukan perubahan perilaku meskipun aplikasinya tetap bisa dibuka.",
+      "keywords": ["operator", "aritmetika", "perbandingan", "logika", "AND", "assignment"],
+      "estimated_minutes": 7,
+      "sort_order": 3,
+      "is_active": true
+    }
+  ],
+  "quizzes": [
+    {
+      "id": "q-logic-sequence-01",
+      "topic_id": "f-programming-logic",
+      "type": "concept",
+      "level": "beginner",
+      "prompt": "Pola alur apa yang paling jelas ditunjukkan oleh tiga langkah ini?",
+      "snippet": "AMBIL gelas\nTUANG air_ke_gelas\nMINUM air",
+      "snippet_language": "pseudocode",
+      "options": [
+        {"id": "sequence", "text": "Urutan langkah (sequence)"},
+        {"id": "condition", "text": "Memilih berdasarkan syarat (conditional)"},
+        {"id": "loop", "text": "Mengulang langkah (loop)"},
+        {"id": "recursion", "text": "Fungsi memanggil dirinya sendiri (recursion)"}
+      ],
+      "correct_option_id": "sequence",
+      "explanation": "Langkah dikerjakan satu per satu dari atas ke bawah. Tidak ada syarat untuk memilih cabang, perintah mengulang, atau fungsi yang memanggil dirinya sendiri. Ini pseudocode: cara menulis alur untuk manusia, bukan sintaks bahasa yang harus dijalankan.",
+      "is_active": true
+    },
+    {
+      "id": "q-variables-language-01",
+      "topic_id": "f-variables-data-types",
+      "type": "language",
+      "level": "beginner",
+      "prompt": "Dari empat pilihan ini, bahasa mana yang memakai anotasi number seperti pada potongan ini?",
+      "snippet": "let jumlah: number = 2;\njumlah = 3;",
+      "snippet_language": "typescript",
+      "options": [
+        {"id": "typescript", "text": "TypeScript"},
+        {"id": "javascript", "text": "JavaScript biasa"},
+        {"id": "python", "text": "Python"},
+        {"id": "dart", "text": "Dart"}
+      ],
+      "correct_option_id": "typescript",
+      "explanation": "Anotasi : number setelah nama variabel dengan let menunjukkan TypeScript di antara pilihan ini. JavaScript biasa tidak memakai anotasi tipe tersebut. Python dan Dart memiliki bentuk deklarasi yang berbeda. let mengizinkan jumlah diberi nilai baru.",
+      "is_active": true
+    },
+    {
+      "id": "q-operators-and-01",
+      "topic_id": "f-operators",
+      "type": "concept",
+      "level": "beginner",
+      "prompt": "Apa fungsi operator && pada baris kedua?",
+      "snippet": "const total = 15000;\nconst diskon = total >= 10000 && true;",
+      "snippet_language": "typescript",
+      "options": [
+        {"id": "and", "text": "Mengharuskan kedua kondisi bernilai true"},
+        {"id": "or", "text": "Mengharuskan setidaknya satu kondisi bernilai true"},
+        {"id": "multiply", "text": "Mengalikan dua angka"},
+        {"id": "assign", "text": "Memberi nilai baru ke total"}
+      ],
+      "correct_option_id": "and",
+      "explanation": "Untuk operand boolean di sini, && adalah AND: kedua kondisi harus true. OR memerlukan setidaknya satu kondisi true, perkalian menggunakan *, dan assignment menggunakan =. Pada contoh, 15000 >= 10000 dan operand kanan sama-sama true, sehingga diskon bernilai true.",
+      "is_active": true
+    }
+  ]
+}
