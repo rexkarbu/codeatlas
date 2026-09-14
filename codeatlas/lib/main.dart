@@ -12,6 +12,7 @@ import 'data/learning_repository.dart';
 import 'data/models.dart';
 import 'data/seed_loader.dart';
 import 'state/app_state.dart';
+import 'widgets/codeatlas_logo.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -194,11 +195,7 @@ class _BootstrapScreenState extends State<BootstrapScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.map_outlined,
-                size: 64,
-                color: theme.colorScheme.primary,
-              ),
+              const CodeAtlasLogo(size: 72, showBackground: true),
               const SizedBox(height: 16),
               Text(
                 'CodeAtlas',

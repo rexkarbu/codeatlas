@@ -70,6 +70,7 @@ jobs:
             ## Pembaruan CodeAtlas ${{ steps.vars.outputs.tag }}
 
             ### ✨ Sorotan Rilis:
+            - **Identitas Visual & Ikon Baru**: Ikon aplikasi resmi bertema Deep Tech Synth—memadukan kisi kartografi/atlas pengetahuan dan kurung kode (`< / >`). Dilengkapi dukungan Android adaptive icon, round icon, dan themed monochrome icon.
             - **Audit & Keterbacaan Materi (Content v5)**: Seluruh 99 topik diaudit dengan penjelasan ringkas, akurat, dan langsung pada inti fungsi.
             - **Revisi Menyeluruh Programming Logic**: Penjelasan terstruktur 8 bagian pedagogis tanpa jargon hardware CPU/register.
             - **Peningkatan Keterbacaan Artikel**: Navigasi Daftar Isi dipindahkan ke AppBar, teks isi menggunakan bobot normal (*regular*), dan penghapusan FAB.

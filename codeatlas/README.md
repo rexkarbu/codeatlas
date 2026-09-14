@@ -1,8 +1,27 @@
-# CodeAtlas 🗺️
+<p align="center">
+  <img src="assets/branding/codeatlas_icon_1024.png" width="128" height="128" alt="CodeAtlas App Icon" />
+</p>
 
-**CodeAtlas** adalah aplikasi mobile offline-first (*Flutter*) berbahasa Indonesia yang dirancang sebagai ensiklopedia interaktif fundamental pemrograman dan peta navigasi ekosistem rekayasa perangkat lunak.
+<h1 align="center">CodeAtlas</h1>
 
-Aplikasi ini ditujukan khusus bagi pemula yang belajar dari nol serta pengguna *vibecoding* (yang sering meminta AI membuat kode namun belum memahami konsep dasar, hubungan antar-teknologi, atau konsekuensi dari perubahan kode tersebut).
+<p align="center">
+  <b>Ensiklopedia Interaktif Fundamental Pemrograman & Peta Ekosistem Rekayasa Perangkat Lunak</b><br>
+  <i>Aplikasi Mobile Offline-First (Flutter) Berbahasa Indonesia untuk Pemula dan Vibecoder</i>
+</p>
+
+---
+
+## 🎨 Identitas Visual & Ikon Aplikasi
+
+CodeAtlas menggunakan identitas visual berbasis filosofi **Deep Tech Synth**:
+- **Sintesis Simbol**: Menggabungkan kisi kartografi / sumbu meridian atlas pengetahuan (*constellation nodes*) dengan kurung siku kode (`< / >`).
+- **Palet Warna**: *Deep Space Midnight Indigo* (`#1E1B4B`), *Electric Violet* (`#8B5CF6`), *Luminous Lavender* (`#A78BFA`), dan *Hyper Cyan* (`#06B6D4`).
+- **Dukungan Adaptif**: Dilengkapi ikon launcher adaptif Android (foreground terpisah dan background aman), ikon bulat legacy, serta *Monochrome Themed Icon* untuk Android 13+.
+- **Aset Vektor & Master**: Berkas master SVG dan PNG resolusi tinggi tersedia di `assets/branding/`.
+
+<p align="center">
+  <img src="assets/branding/codeatlas_icon_preview.png" width="850" alt="Matriks Ikon dan Keterbacaan CodeAtlas" />
+</p>
 
 ---
 

@@ -14,6 +14,7 @@ import 'features/practice/practice_screen.dart';
 import 'features/roadmap/roadmap_screen.dart';
 import 'features/topic/topic_screen.dart';
 import 'state/app_state.dart';
+import 'widgets/codeatlas_logo.dart';
 
 class CodeAtlasApp extends StatefulWidget {
   final AppState appState;
@@ -218,14 +219,20 @@ class _CodeAtlasAppState extends State<CodeAtlasApp> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Tentang CodeAtlas'),
+          title: const Row(
+            children: [
+              CodeAtlasLogo(size: 32, showBackground: true),
+              SizedBox(width: 12),
+              Text('Tentang CodeAtlas'),
+            ],
+          ),
           content: const SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'CodeAtlas v1.0.0',
+                  'CodeAtlas v1.0.1',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8),
