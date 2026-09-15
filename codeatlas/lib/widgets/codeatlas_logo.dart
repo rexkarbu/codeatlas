@@ -49,11 +49,7 @@ class CodeAtlasLogo extends StatelessWidget {
       );
     }
 
-    return SizedBox(
-      width: size,
-      height: size,
-      child: image,
-    );
+    return SizedBox(width: size, height: size, child: image);
   }
 }
 
@@ -130,7 +126,11 @@ class CodeAtlasLogoPainter extends CustomPainter {
           : const Color(0xFF8B5CF6).withValues(alpha: 0.35)
       ..strokeWidth = 8
       ..strokeCap = StrokeCap.round;
-    canvas.drawLine(const Offset(256, 110), const Offset(256, 402), meridianPaint);
+    canvas.drawLine(
+      const Offset(256, 110),
+      const Offset(256, 402),
+      meridianPaint,
+    );
 
     // 3. Primary Geometry: Code Syntax Brackets '<' and '>' (Bold 32px stroke)
     final leftPath = Path()

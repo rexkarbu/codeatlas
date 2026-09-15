@@ -337,19 +337,14 @@ class LearningRepository {
         );
         if (topicExists.isEmpty) continue;
 
-        await txn.insert(
-          'progress',
-          {
-            'topic_id': topicId,
-            'status': p['status'] ?? 'not_started',
-            'notes': p['notes'] ?? '',
-            'last_reviewed_at': p['last_reviewed_at'],
-            'updated_at':
-                p['updated_at'] ??
-                DateTime.now().toUtc().millisecondsSinceEpoch,
-          },
-          conflictAlgorithm: ConflictAlgorithm.replace,
-        );
+        await txn.insert('progress', {
+          'topic_id': topicId,
+          'status': p['status'] ?? 'not_started',
+          'notes': p['notes'] ?? '',
+          'last_reviewed_at': p['last_reviewed_at'],
+          'updated_at':
+              p['updated_at'] ?? DateTime.now().toUtc().millisecondsSinceEpoch,
+        }, conflictAlgorithm: ConflictAlgorithm.replace);
         importedProgressCount++;
       }
 
@@ -380,11 +375,11 @@ class LearningRepository {
             whereArgs: [tId],
           );
           if (topicExists.isNotEmpty) {
-            await txn.insert(
-              'learning_path_items',
-              {'path_id': pathId, 'topic_id': tId, 'position': i},
-              conflictAlgorithm: ConflictAlgorithm.ignore,
-            );
+            await txn.insert('learning_path_items', {
+              'path_id': pathId,
+              'topic_id': tId,
+              'position': i,
+            }, conflictAlgorithm: ConflictAlgorithm.ignore);
           }
         }
       }

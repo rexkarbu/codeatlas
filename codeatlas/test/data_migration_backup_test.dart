@@ -46,7 +46,10 @@ class FakeDatabase implements Database {
   }
 
   @override
-  Future<T> transaction<T>(Future<T> Function(Transaction txn) action, {bool? exclusive}) async {
+  Future<T> transaction<T>(
+    Future<T> Function(Transaction txn) action, {
+    bool? exclusive,
+  }) async {
     final fakeTxn = FakeTransaction(this);
     return action(fakeTxn);
   }
@@ -146,7 +149,7 @@ void main() {
           'name': 'Jalur Penting',
           'goal': 'custom',
           'topics': ['topic-1', 'topic-2'],
-        }
+        },
       ],
     };
 

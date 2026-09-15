@@ -9,11 +9,13 @@ import 'data/learning_repository.dart';
 import 'data/seed_loader.dart';
 import 'features/explore/explore_screen.dart';
 import 'features/home/home_screen.dart';
+import 'features/learning_paths/path_detail_screen.dart';
 import 'features/learning_paths/paths_screen.dart';
 import 'features/practice/practice_screen.dart';
 import 'features/roadmap/roadmap_screen.dart';
 import 'features/topic/topic_screen.dart';
 import 'state/app_state.dart';
+import 'theme/atlas_theme.dart';
 import 'widgets/codeatlas_logo.dart';
 
 class CodeAtlasApp extends StatefulWidget {
@@ -37,7 +39,13 @@ class CodeAtlasApp extends StatefulWidget {
 class _CodeAtlasAppState extends State<CodeAtlasApp> {
   int _currentIndex = 0;
 
-  void _openTopic(String topicId) {
+  void _openTopic(
+    String topicId, {
+    String? pathId,
+    String? pathName,
+    List<String>? pathTopicIds,
+    VoidCallback? onBackToPath,
+  }) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => TopicScreen(
@@ -46,6 +54,33 @@ class _CodeAtlasAppState extends State<CodeAtlasApp> {
           learningRepo: widget.learningRepo,
           appState: widget.appState,
           onOpenTopic: _openTopic,
+          pathId: pathId,
+          pathName: pathName,
+          pathTopicIds: pathTopicIds,
+          onBackToPath: onBackToPath,
+        ),
+      ),
+    );
+  }
+
+  void _openPathDetail(String presetKey) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => PathDetailScreen(
+          presetKey: presetKey,
+          contentRepo: widget.contentRepo,
+          learningRepo: widget.learningRepo,
+          appState: widget.appState,
+          onOpenTopic:
+              (topicId, {pathId, pathName, pathTopicIds, onBackToPath}) {
+                _openTopic(
+                  topicId,
+                  pathId: pathId,
+                  pathName: pathName,
+                  pathTopicIds: pathTopicIds,
+                  onBackToPath: onBackToPath,
+                );
+              },
         ),
       ),
     );
@@ -61,16 +96,8 @@ class _CodeAtlasAppState extends State<CodeAtlasApp> {
       title: 'CodeAtlas',
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: const Color(0xFF2563EB),
-        brightness: Brightness.light,
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: const Color(0xFF2563EB),
-        brightness: Brightness.dark,
-      ),
+      theme: AtlasTheme.buildTheme(Brightness.light),
+      darkTheme: AtlasTheme.buildTheme(Brightness.dark),
       home: _buildScaffold(),
     );
   }
@@ -150,6 +177,7 @@ class _CodeAtlasAppState extends State<CodeAtlasApp> {
                         onNavigateToPaths: () => _switchTab(4),
                         onOpenTopic: _openTopic,
                         onOpenSettings: _showSettings,
+                        onOpenPathPreset: _openPathDetail,
                       ),
                       ExploreScreen(
                         contentRepo: widget.contentRepo,
@@ -217,13 +245,14 @@ class _CodeAtlasAppState extends State<CodeAtlasApp> {
   void _showSettings() {
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (dialogContext) {
         return AlertDialog(
           title: const Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               CodeAtlasLogo(size: 32, showBackground: true),
               SizedBox(width: 12),
-              Text('Tentang CodeAtlas'),
+              Expanded(child: Text('Tentang CodeAtlas')),
             ],
           ),
           content: const SingleChildScrollView(

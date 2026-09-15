@@ -1,13 +1,16 @@
-// lib/features/topic/topic_screen.dart — F03, F05, F06: Topic detail with
-// 8 pedagogical sections, single 'Daftar Isi' navigation, expandable reflection answers,
-// status selector, notes editor, prerequisite/related links.
+// lib/features/topic/topic_screen.dart — Redesigned serene editorial topic screen.
+// 8 pedagogical sections, safe bottom bar for status & keyboard handling,
+// unboxed fluid reading typography, dynamic language filtering for code examples,
+// persistent draft protection, and accessible TOC modal.
 
 import 'package:flutter/material.dart';
 
 import '../../data/content_repository.dart';
 import '../../data/learning_repository.dart';
 import '../../data/models.dart';
+import '../../data/reading_time.dart';
 import '../../state/app_state.dart';
+import '../../theme/atlas_theme.dart';
 import '../../widgets/code_snippet.dart';
 
 class TopicScreen extends StatefulWidget {
@@ -16,6 +19,10 @@ class TopicScreen extends StatefulWidget {
   final LearningRepository learningRepo;
   final AppState appState;
   final void Function(String topicId) onOpenTopic;
+  final String? pathId;
+  final String? pathName;
+  final List<String>? pathTopicIds;
+  final VoidCallback? onBackToPath;
 
   const TopicScreen({
     super.key,
@@ -24,6 +31,10 @@ class TopicScreen extends StatefulWidget {
     required this.learningRepo,
     required this.appState,
     required this.onOpenTopic,
+    this.pathId,
+    this.pathName,
+    this.pathTopicIds,
+    this.onBackToPath,
   });
 
   @override
@@ -38,6 +49,7 @@ class _TopicScreenState extends State<TopicScreen> {
   bool _saving = false;
   String? _saveError;
   bool _saveSuccess = false;
+  int _selectedCodeIndex = 0;
 
   // GlobalKeys for TOC scrolling
   final _keyAnalogy = GlobalKey();
@@ -112,10 +124,10 @@ class _TopicScreenState extends State<TopicScreen> {
 
     if (result == 'save') {
       await _saveNotes();
-      return !_notesDirty; // Only pop if save succeeded and no further unsaved edits
+      return !_notesDirty;
     }
     if (result == 'discard') return true;
-    return false; // stay
+    return false;
   }
 
   Future<void> _updateStatus(LearningStatus status) async {
@@ -138,16 +150,15 @@ class _TopicScreenState extends State<TopicScreen> {
       _saveError = null;
       _saveSuccess = false;
     });
+
     try {
       await widget.learningRepo.updateNotes(widget.topicId, textToSave);
       if (mounted) {
         setState(() {
           _saving = false;
-          _savedNotes =
-              textToSave; // Marked saved only after database confirms write
+          _savedNotes = textToSave;
           _saveSuccess = true;
         });
-        // Reset success indicator after 2 seconds
         Future.delayed(const Duration(seconds: 2), () {
           if (mounted) setState(() => _saveSuccess = false);
         });
@@ -195,7 +206,10 @@ class _TopicScreenState extends State<TopicScreen> {
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.list_alt),
+                        const Icon(
+                          Icons.list_alt,
+                          color: AtlasColors.primaryIndigo,
+                        ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
@@ -308,6 +322,38 @@ class _TopicScreenState extends State<TopicScreen> {
     );
   }
 
+  Future<void> _navigateToNextTopic(String nextId) async {
+    final canLeave = await _onWillPop();
+    if (!canLeave || !mounted) return;
+
+    Navigator.of(context)
+        .pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => TopicScreen(
+              topicId: nextId,
+              contentRepo: widget.contentRepo,
+              learningRepo: widget.learningRepo,
+              appState: widget.appState,
+              onOpenTopic: widget.onOpenTopic,
+              pathId: widget.pathId,
+              pathName: widget.pathName,
+              pathTopicIds: widget.pathTopicIds,
+              onBackToPath: widget.onBackToPath,
+            ),
+          ),
+        )
+        .then((_) {
+          widget.onBackToPath?.call();
+        });
+  }
+
+  Future<void> _navigateBackToPath() async {
+    final canLeave = await _onWillPop();
+    if (!canLeave || !mounted) return;
+    Navigator.of(context).pop();
+    widget.onBackToPath?.call();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_topic == null) {
@@ -319,18 +365,30 @@ class _TopicScreenState extends State<TopicScreen> {
 
     final topic = _topic!;
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return PopScope(
       canPop: !_notesDirty,
       onPopInvokedWithResult: (didPop, _) async {
         if (!didPop) {
           final canPop = await _onWillPop();
-          if (canPop && context.mounted) Navigator.of(context).pop();
+          if (canPop && context.mounted) {
+            Navigator.of(context).pop();
+            widget.onBackToPath?.call();
+          }
         }
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(topic.title),
+          title: Tooltip(
+            message: topic.title,
+            child: Text(
+              topic.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
           actions: [
             IconButton(
               key: const ValueKey('toc_button'),
@@ -340,174 +398,138 @@ class _TopicScreenState extends State<TopicScreen> {
             ),
           ],
         ),
+        // By placing the status selector in Scaffold.bottomNavigationBar,
+        // Scaffold automatically calculates its actual measured layout height
+        // and constrains the body to end cleanly above it.
+        // There is no hardcoded 80px overlap, and the scroll view reaches the end freely.
+        bottomNavigationBar: _buildSafeBottomBar(theme, isDark),
         body: SingleChildScrollView(
           key: const ValueKey('topic_scrollable'),
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.fromLTRB(18, 12, 18, 36),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header: level, time, status
-              _buildHeader(topic, theme),
-              const SizedBox(height: 16),
+              // Header: Level Badge & Estimated reading time
+              _buildHeaderMetadata(topic, theme, isDark),
+              const SizedBox(height: 14),
 
-              // Summary
-              Text(
-                topic.summary,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  fontStyle: FontStyle.italic,
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-              const SizedBox(height: 24),
+              // Path Header Banner (if opened via learning path)
+              _buildPathHeaderBanner(theme, isDark),
 
-              // 1. Explanation Simple / Analogi
-              Container(key: _keyAnalogy),
-              _SectionTitle(
-                title: '1. Apa Konsep Ini?',
-                subtitle: 'Analogi Awam & Gambaran Konseptual',
-              ),
-              const SizedBox(height: 8),
-              Text(
-                topic.explanationSimple,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  height: 1.6,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              // 2. Problem Context
-              if (topic.problemContext.isNotEmpty) ...[
-                Container(key: _keyProblem),
-                _SectionTitle(
-                  title: '2. Masalah Apa yang Diselesaikan?',
-                  subtitle: 'Konteks Nyata & Mengapa Konsep Ini Dibutuhkan',
-                ),
-                const SizedBox(height: 8),
+              // Summary: Clean unboxed lead paragraph with proportional typography
+              if (topic.summary.isNotEmpty) ...[
                 Text(
-                  topic.problemContext,
+                  topic.summary,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    height: 1.6,
+                    color: theme.colorScheme.onSurfaceVariant,
+                    height: 1.5,
                     fontWeight: FontWeight.normal,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 20),
               ],
 
-              // 3. Explanation Technical / Mekanisme
+              // ─── 1. Explanation Simple / Analogi ───
+              Container(key: _keyAnalogy),
+              const _SectionTitle(
+                title: '1. Apa Konsep Ini?',
+                subtitle: 'Analogi Awam & Gambaran Konseptual',
+              ),
+              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? AtlasColors.darkSurfaceElevated
+                      : AtlasColors.lightSurfaceElevated,
+                  borderRadius: BorderRadius.circular(10),
+                  border: const Border(
+                    left: BorderSide(
+                      color: AtlasColors.primaryIndigo,
+                      width: 3.5,
+                    ),
+                  ),
+                ),
+                child: Text(
+                  topic.explanationSimple,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    height: 1.68,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 28),
+
+              // ─── 2. Problem Context ───
+              if (topic.problemContext.isNotEmpty) ...[
+                Container(key: _keyProblem),
+                const _SectionTitle(
+                  title: '2. Masalah Apa yang Diselesaikan?',
+                  subtitle: 'Konteks Nyata & Mengapa Konsep Ini Dibutuhkan',
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  topic.problemContext,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    height: 1.68,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                const SizedBox(height: 28),
+              ],
+
+              // ─── 3. Explanation Technical / Mekanisme ───
               Container(key: _keyMechanism),
-              _SectionTitle(
+              const _SectionTitle(
                 title: '3. Bagaimana Cara Kerjanya?',
                 subtitle: 'Mekanisme Teknis & Penjelasan Komponen',
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               Text(
                 topic.explanationTechnical,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  height: 1.6,
+                  height: 1.68,
                   fontWeight: FontWeight.normal,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 28),
 
-              // 4. Code Examples & Walkthrough
+              // ─── 4. Code Examples & Walkthrough ───
               if (topic.codeExamples.isNotEmpty) ...[
                 Container(key: _keyCode),
-                _SectionTitle(
+                const _SectionTitle(
                   title: '4. Bagaimana Membaca Contohnya?',
                   subtitle: 'Contoh Kode & Penelusuran Langkah demi Langkah',
                 ),
-                const SizedBox(height: 8),
-                for (final example in topic.codeExamples) ...[
-                  Text(
-                    example.label,
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  CodeSnippet(
-                    code: example.code,
-                    language: example.language,
-                    expectedOutput: example.expectedOutput,
-                  ),
-                  if (example.explanation.isNotEmpty) ...[
-                    const SizedBox(height: 6),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.surfaceContainerHighest
-                            .withValues(alpha: 0.5),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border(
-                          left: BorderSide(
-                            color: theme.colorScheme.primary,
-                            width: 3,
-                          ),
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.directions_walk,
-                                size: 16,
-                                color: theme.colorScheme.primary,
-                              ),
-                              const SizedBox(width: 6),
-                              Expanded(
-                                child: Text(
-                                  'Penjelasan Alur:',
-                                  style: theme.textTheme.labelMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: theme.colorScheme.primary,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            example.explanation,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
-                              height: 1.5,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                  const SizedBox(height: 16),
-                ],
-                const SizedBox(height: 8),
+                const SizedBox(height: 10),
+                _buildCodeExamplesSection(topic.codeExamples, theme, isDark),
+                const SizedBox(height: 28),
               ],
 
-              // 5. Misconceptions
+              // ─── 5. Misconceptions ───
               if (topic.misconceptions.isNotEmpty) ...[
                 Container(key: _keyMisconceptions),
-                _SectionTitle(
+                const _SectionTitle(
                   title: '5. Apa yang Sering Disalahpahami?',
-                  subtitle: 'Miskonsepsi, Penyebab, dan Cara Mengenali',
+                  subtitle: 'Miskonsepsi Pemula & Pembenarannya',
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 10),
                 for (final misc in topic.misconceptions) ...[
                   Card(
-                    elevation: 0,
-                    margin: const EdgeInsets.only(bottom: 12),
-                    color: theme.colorScheme.errorContainer.withValues(
-                      alpha: 0.25,
-                    ),
+                    color: isDark
+                        ? const Color(0xFF261D15)
+                        : const Color(0xFFFFFBEB),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                       side: BorderSide(
-                        color: theme.colorScheme.error.withValues(alpha: 0.4),
+                        color: isDark
+                            ? AtlasColors.accentAmber.withValues(alpha: 0.4)
+                            : AtlasColors.accentAmberLight.withValues(
+                                alpha: 0.3,
+                              ),
                       ),
                     ),
+                    margin: const EdgeInsets.only(bottom: 12),
                     child: Padding(
                       padding: const EdgeInsets.all(14),
                       child: Column(
@@ -516,10 +538,10 @@ class _TopicScreenState extends State<TopicScreen> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.cancel_outlined,
                                 size: 18,
-                                color: theme.colorScheme.error,
+                                color: AtlasColors.accentCoral,
                               ),
                               const SizedBox(width: 8),
                               Expanded(
@@ -527,7 +549,9 @@ class _TopicScreenState extends State<TopicScreen> {
                                   misc.misconception,
                                   style: theme.textTheme.titleSmall?.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    color: theme.colorScheme.error,
+                                    color: isDark
+                                        ? const Color(0xFFFCA5A5)
+                                        : const Color(0xFFDC2626),
                                   ),
                                 ),
                               ),
@@ -540,14 +564,14 @@ class _TopicScreenState extends State<TopicScreen> {
                               const Icon(
                                 Icons.check_circle_outline,
                                 size: 18,
-                                color: Colors.green,
+                                color: AtlasColors.accentMint,
                               ),
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text(
                                   misc.explanation,
                                   style: theme.textTheme.bodyMedium?.copyWith(
-                                    height: 1.5,
+                                    height: 1.55,
                                   ),
                                 ),
                               ),
@@ -561,7 +585,9 @@ class _TopicScreenState extends State<TopicScreen> {
                                 vertical: 6,
                               ),
                               decoration: BoxDecoration(
-                                color: theme.colorScheme.surface,
+                                color: isDark
+                                    ? AtlasColors.darkSurfaceElevated
+                                    : Colors.white,
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Row(
@@ -570,7 +596,9 @@ class _TopicScreenState extends State<TopicScreen> {
                                   Icon(
                                     Icons.search,
                                     size: 16,
-                                    color: theme.colorScheme.primary,
+                                    color: AtlasColors.primary(
+                                      theme.brightness,
+                                    ),
                                   ),
                                   const SizedBox(width: 6),
                                   Expanded(
@@ -594,84 +622,80 @@ class _TopicScreenState extends State<TopicScreen> {
                 const SizedBox(height: 16),
               ],
 
-              // 6. When to Use & Limits
+              // ─── 6. When to Use & Limits ───
               if (topic.whenToUse.isNotEmpty) ...[
                 Container(key: _keyWhenToUse),
-                _SectionTitle(
+                const _SectionTitle(
                   title: '6. Kapan Dipakai & Batas Penerapan?',
                   subtitle: 'Skenario Tepat vs Kapan Sebaiknya Dihindari',
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 10),
                 Text(
                   topic.whenToUse,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    height: 1.6,
+                    height: 1.68,
                     fontWeight: FontWeight.normal,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 28),
               ],
 
-              // 7. Why Vibecoding Matters
+              // ─── 7. Why Vibecoding Matters ───
               Container(key: _keyVibecoding),
-              _SectionTitle(
+              const _SectionTitle(
                 title: '7. Mengapa Penting saat Vibecoding?',
                 subtitle: 'Jebakan Kode AI & Pertanyaan Kritis untuk AI',
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primaryContainer.withValues(
-                    alpha: 0.35,
-                  ),
+                  color: isDark
+                      ? AtlasColors.accentLavender.withValues(alpha: 0.12)
+                      : AtlasColors.accentLavenderLight.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                    color: isDark
+                        ? AtlasColors.accentLavender.withValues(alpha: 0.3)
+                        : AtlasColors.accentLavenderLight.withValues(
+                            alpha: 0.25,
+                          ),
                   ),
                 ),
                 child: Text(
                   topic.whyVibecodingMatters,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    height: 1.6,
+                    height: 1.68,
                     fontWeight: FontWeight.normal,
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 28),
 
-              // 8. Reflection Questions (Expandable answers)
+              // ─── 8. Reflection Questions ───
               if (topic.reflectionQuestions.isNotEmpty) ...[
                 Container(key: _keyReflection),
-                _SectionTitle(
+                const _SectionTitle(
                   title: '8. Bagaimana Memeriksa Pemahaman?',
                   subtitle:
                       'Uji pemahaman mandiri (ketuk untuk melihat jawaban)',
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 10),
                 for (int i = 0; i < topic.reflectionQuestions.length; i++) ...[
                   Card(
-                    elevation: 0,
                     margin: const EdgeInsets.only(bottom: 8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      side: BorderSide(
-                        color: theme.colorScheme.outlineVariant.withValues(
-                          alpha: 0.5,
-                        ),
-                      ),
-                    ),
                     child: ExpansionTile(
                       key: ValueKey('reflection_tile_$i'),
                       leading: CircleAvatar(
                         radius: 14,
-                        backgroundColor: theme.colorScheme.primaryContainer,
+                        backgroundColor: AtlasColors.primary(theme.brightness)
+                            .withValues(alpha: 0.15),
                         child: Text(
                           '${i + 1}',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: theme.colorScheme.onPrimaryContainer,
+                            color: AtlasColors.primary(theme.brightness),
                           ),
                         ),
                       ),
@@ -685,21 +709,21 @@ class _TopicScreenState extends State<TopicScreen> {
                       expandedCrossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Divider(),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 6),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.check_circle,
                               size: 16,
-                              color: theme.colorScheme.primary,
+                              color: AtlasColors.accentMint,
                             ),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(
                                 topic.reflectionQuestions[i].answer,
                                 style: theme.textTheme.bodyMedium?.copyWith(
-                                  height: 1.5,
+                                  height: 1.55,
                                 ),
                               ),
                             ),
@@ -712,10 +736,10 @@ class _TopicScreenState extends State<TopicScreen> {
                 const SizedBox(height: 24),
               ],
 
-              // Prerequisites & Relations
+              // ─── Prerequisites & Relations ───
               Container(key: _keyPrereqs),
               if (topic.prerequisiteIds.isNotEmpty) ...[
-                _SectionTitle(title: 'Prasyarat'),
+                const _SectionTitle(title: 'Prasyarat'),
                 const SizedBox(height: 8),
                 _TopicLinks(
                   topicIds: topic.prerequisiteIds,
@@ -727,9 +751,8 @@ class _TopicScreenState extends State<TopicScreen> {
                 const SizedBox(height: 16),
               ],
 
-              // Related Topics
               if (topic.relatedTopicIds.isNotEmpty) ...[
-                _SectionTitle(title: 'Topik Terkait'),
+                const _SectionTitle(title: 'Topik Terkait'),
                 const SizedBox(height: 8),
                 _TopicLinks(
                   topicIds: topic.relatedTopicIds,
@@ -740,7 +763,7 @@ class _TopicScreenState extends State<TopicScreen> {
                 const SizedBox(height: 16),
               ],
 
-              // Dependents (topics that require this)
+              // Dependents (topics requiring this)
               FutureBuilder<List<String>>(
                 future: widget.contentRepo.getDependentTopicIds(widget.topicId),
                 builder: (context, snapshot) {
@@ -749,7 +772,7 @@ class _TopicScreenState extends State<TopicScreen> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _SectionTitle(title: 'Topik yang Membutuhkan Ini'),
+                      const _SectionTitle(title: 'Topik yang Membutuhkan Ini'),
                       const SizedBox(height: 8),
                       _TopicLinks(
                         topicIds: deps,
@@ -764,15 +787,15 @@ class _TopicScreenState extends State<TopicScreen> {
               ),
 
               const Divider(),
-              const SizedBox(height: 8),
+              const SizedBox(height: 16),
 
-              // Notes Section
+              // ─── Section 9: Personal Notes Editor ───
               Container(key: _keyNotes),
-              _SectionTitle(
+              const _SectionTitle(
                 title: 'Catatan Pribadi',
                 subtitle: 'Simpan pemahaman atau rangkuman pribadimu',
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               TextField(
                 controller: _notesController,
                 maxLines: 6,
@@ -782,12 +805,12 @@ class _TopicScreenState extends State<TopicScreen> {
                   border: const OutlineInputBorder(),
                   counterText: '',
                   suffixIcon: _saveSuccess
-                      ? const Icon(Icons.check, color: Colors.green)
+                      ? const Icon(Icons.check, color: AtlasColors.accentMint)
                       : null,
                 ),
                 onChanged: (value) => setState(() {}),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
@@ -801,7 +824,7 @@ class _TopicScreenState extends State<TopicScreen> {
                             height: 16,
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
-                        : const Icon(Icons.save),
+                        : const Icon(Icons.save, size: 16),
                     label: Text(
                       _saving
                           ? 'Menyimpan...'
@@ -815,12 +838,13 @@ class _TopicScreenState extends State<TopicScreen> {
                       'Belum disimpan',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.error,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                 ],
               ),
               if (_saveError != null) ...[
-                const SizedBox(height: 4),
+                const SizedBox(height: 6),
                 Row(
                   children: [
                     Icon(
@@ -828,7 +852,7 @@ class _TopicScreenState extends State<TopicScreen> {
                       color: theme.colorScheme.error,
                       size: 16,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: 6),
                     Expanded(
                       child: Text(
                         'Gagal menyimpan: $_saveError',
@@ -844,7 +868,10 @@ class _TopicScreenState extends State<TopicScreen> {
                   ],
                 ),
               ],
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
+
+              // ─── Path Progression Section (If opened via learning path) ───
+              _buildPathProgressionSection(theme, isDark),
             ],
           ),
         ),
@@ -852,62 +879,472 @@ class _TopicScreenState extends State<TopicScreen> {
     );
   }
 
-  Widget _buildHeader(Topic topic, ThemeData theme) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
+  // ─── Path Header Banner ───
+
+  Widget _buildPathHeaderBanner(ThemeData theme, bool isDark) {
+    if (widget.pathTopicIds == null || widget.pathTopicIds!.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    final currentIndex = widget.pathTopicIds!.indexOf(widget.topicId);
+    if (currentIndex < 0) return const SizedBox.shrink();
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: AtlasColors.primary(theme.brightness)
+            .withValues(alpha: isDark ? 0.18 : 0.10),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: AtlasColors.primary(theme.brightness)
+              .withValues(alpha: isDark ? 0.35 : 0.25),
+          width: 1,
+        ),
+      ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         children: [
-          // Level badge
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.secondaryContainer,
-              borderRadius: BorderRadius.circular(6),
-            ),
+          Icon(
+            Icons.route_outlined,
+            size: 18,
+            color: AtlasColors.primary(theme.brightness),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
             child: Text(
-              topic.level.label,
+              '${widget.pathName ?? "Jalur Belajar"} • Materi ${currentIndex + 1} dari ${widget.pathTopicIds!.length}',
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: theme.colorScheme.onSecondaryContainer,
+                color: AtlasColors.primary(theme.brightness),
               ),
             ),
           ),
-          const SizedBox(width: 8),
-          Icon(
-            Icons.schedule,
-            size: 14,
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
-          const SizedBox(width: 4),
-          Text(
-            '${topic.estimatedMinutes} menit',
-            style: theme.textTheme.bodySmall,
-          ),
-          const SizedBox(width: 16),
-          // Status selector
-          Semantics(
-            label: 'Status: ${_currentStatus.label}',
-            child: SegmentedButton<LearningStatus>(
-              showSelectedIcon: false,
-              segments: [
-                for (final status in LearningStatus.values)
-                  ButtonSegment(
-                    value: status,
-                    label: Text(
-                      status.label,
-                      style: const TextStyle(fontSize: 11),
+          InkWell(
+            onTap: _navigateBackToPath,
+            borderRadius: BorderRadius.circular(4),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Jalur',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: AtlasColors.primary(theme.brightness),
                     ),
                   ),
-              ],
-              selected: {_currentStatus},
-              onSelectionChanged: (selected) {
-                _updateStatus(selected.first);
-              },
+                  const SizedBox(width: 2),
+                  Icon(
+                    Icons.arrow_upward,
+                    size: 14,
+                    color: AtlasColors.primary(theme.brightness),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // ─── Path Progression Section ───
+
+  Widget _buildPathProgressionSection(ThemeData theme, bool isDark) {
+    if (widget.pathTopicIds == null || widget.pathTopicIds!.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    final currentIndex = widget.pathTopicIds!.indexOf(widget.topicId);
+    if (currentIndex < 0) return const SizedBox.shrink();
+
+    final hasNext = currentIndex + 1 < widget.pathTopicIds!.length;
+    final nextId = hasNext ? widget.pathTopicIds![currentIndex + 1] : null;
+
+    return Container(
+      margin: const EdgeInsets.only(top: 8, bottom: 20),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isDark
+            ? AtlasColors.darkSurfaceElevated
+            : AtlasColors.lightSurfaceElevated,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isDark ? AtlasColors.darkBorder : AtlasColors.lightBorder,
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.route_outlined,
+                size: 18,
+                color: AtlasColors.primary(theme.brightness),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Kelanjutan Belajar • ${widget.pathName ?? "Jalur Belajar"}',
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AtlasColors.primary(theme.brightness),
+                  ),
+                ),
+              ),
+              Text(
+                '${currentIndex + 1} / ${widget.pathTopicIds!.length}',
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          if (hasNext && nextId != null) ...[
+            FutureBuilder<Topic?>(
+              future: widget.contentRepo.getTopicById(nextId),
+              builder: (context, snapshot) {
+                final nextTopic = snapshot.data;
+                final title = nextTopic?.title ?? nextId;
+                final duration = nextTopic != null
+                    ? ReadingTimeEstimator.format(nextTopic)
+                    : '';
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Materi Berikutnya:',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      title,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    if (duration.isNotEmpty) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        duration,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.icon(
+                        key: const ValueKey('next_topic_button'),
+                        onPressed: () => _navigateToNextTopic(nextId),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: AtlasColors.primary(
+                            theme.brightness,
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        icon: const Icon(Icons.arrow_forward, size: 18),
+                        label: const Text(
+                          'Lanjut ke Materi Berikutnya',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ] else ...[
+            Text(
+              'Selamat! Ini adalah topik terakhir dalam jalur ini.',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: _navigateBackToPath,
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                icon: const Icon(Icons.check_circle_outline, size: 18),
+                label: const Text(
+                  'Kembali ke Detail Jalur',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  // ─── Header: Metadata Row ───
+
+  Widget _buildHeaderMetadata(Topic topic, ThemeData theme, bool isDark) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 6,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: AtlasColors.primary(theme.brightness)
+                .withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Text(
+            topic.level.label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: AtlasColors.primary(theme.brightness),
+            ),
+          ),
+        ),
+        Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 4,
+          children: [
+            Icon(
+              Icons.schedule,
+              size: 14,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+            Text(
+              ReadingTimeEstimator.format(topic),
+              style: theme.textTheme.bodySmall,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  // ─── Section 4: Code Examples (Only showing available languages) ───
+
+  Widget _buildCodeExamplesSection(
+    List<CodeExample> examples,
+    ThemeData theme,
+    bool isDark,
+  ) {
+    if (examples.length == 1) {
+      final ex = examples.first;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            ex.label,
+            style: theme.textTheme.labelLarge?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 6),
+          CodeSnippet(
+            code: ex.code,
+            language: ex.language,
+            expectedOutput: ex.expectedOutput,
+          ),
+          if (ex.explanation.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            _buildCodeExplanation(ex.explanation, theme, isDark),
+          ],
+        ],
+      );
+    }
+
+    // Multiple code examples: Tab between available languages ONLY
+    final currentExample =
+        examples[_selectedCodeIndex.clamp(0, examples.length - 1)];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Language Selector Chips (Only languages with actual code)
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              for (int i = 0; i < examples.length; i++) ...[
+                ChoiceChip(
+                  label: Text(
+                    examples[i].language.isNotEmpty
+                        ? examples[i].language.toUpperCase()
+                        : 'Contoh ${i + 1}',
+                  ),
+                  selected: _selectedCodeIndex == i,
+                  onSelected: (selected) {
+                    if (selected) setState(() => _selectedCodeIndex = i);
+                  },
+                ),
+                const SizedBox(width: 8),
+              ],
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          currentExample.label,
+          style: theme.textTheme.labelLarge?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 6),
+        CodeSnippet(
+          code: currentExample.code,
+          language: currentExample.language,
+          expectedOutput: currentExample.expectedOutput,
+        ),
+        if (currentExample.explanation.isNotEmpty) ...[
+          const SizedBox(height: 8),
+          _buildCodeExplanation(currentExample.explanation, theme, isDark),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildCodeExplanation(String text, ThemeData theme, bool isDark) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: isDark
+            ? AtlasColors.darkSurfaceElevated
+            : AtlasColors.lightSurfaceElevated,
+        borderRadius: BorderRadius.circular(8),
+        border: Border(
+          left: BorderSide(
+            color: AtlasColors.primary(theme.brightness),
+            width: 3,
+          ),
+        ),
+      ),
+      child: Text(
+        text,
+        style: theme.textTheme.bodySmall?.copyWith(
+          height: 1.5,
+          color: theme.colorScheme.onSurfaceVariant,
+        ),
+      ),
+    );
+  }
+
+  // ─── Safe Bottom Action Bar: Status & Action Bar ───
+
+  Widget _buildSafeBottomBar(ThemeData theme, bool isDark) {
+    final primary = AtlasColors.primary(theme.brightness);
+
+    return SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          color: isDark ? AtlasColors.darkSurface : AtlasColors.lightSurface,
+          border: Border(
+            top: BorderSide(
+              color: isDark ? AtlasColors.darkBorder : AtlasColors.lightBorder,
+              width: 1,
+            ),
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 6,
+              children: [
+                Icon(
+                  Icons.bookmark_outline,
+                  size: 15,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+                Text(
+                  'Status Pemahaman:',
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                for (final status in LearningStatus.values) ...[
+                  Expanded(
+                    child: Semantics(
+                      button: true,
+                      selected: _currentStatus == status,
+                      label: 'Status ${status.label}',
+                      child: InkWell(
+                        onTap: () => _updateStatus(status),
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: _currentStatus == status
+                                ? primary.withValues(
+                                    alpha: isDark ? 0.25 : 0.15,
+                                  )
+                                : (isDark
+                                      ? AtlasColors.darkSurfaceElevated
+                                      : AtlasColors.lightSurfaceElevated),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: _currentStatus == status
+                                  ? primary
+                                  : (isDark
+                                        ? AtlasColors.darkBorder
+                                        : AtlasColors.lightBorder),
+                              width: _currentStatus == status ? 2 : 1,
+                            ),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            status.label,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: _currentStatus == status
+                                  ? FontWeight.bold
+                                  : FontWeight.w500,
+                              color: _currentStatus == status
+                                  ? primary
+                                  : theme.colorScheme.onSurface,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (status != LearningStatus.values.last)
+                    const SizedBox(width: 8),
+                ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -27,6 +27,7 @@ android {
         // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        manifestPlaceholders["appName"] = "CodeAtlas"
     }
 
     val keystorePath = System.getenv("KEYSTORE_PATH")
@@ -53,9 +54,12 @@ android {
 
     buildTypes {
         debug {
+            applicationIdSuffix = ".debug"
+            manifestPlaceholders["appName"] = "CodeAtlas Debug"
             signingConfig = signingConfigs.getByName("debug")
         }
         release {
+            manifestPlaceholders["appName"] = "CodeAtlas"
             if (hasReleaseSigning) {
                 signingConfig = signingConfigs.getByName("release")
             } else {
